@@ -1,4 +1,4 @@
-package com.polytech.ndames;
+package com.polytech.ndames.genetic;
 
 import com.atles.genetic_harvester.*;
 

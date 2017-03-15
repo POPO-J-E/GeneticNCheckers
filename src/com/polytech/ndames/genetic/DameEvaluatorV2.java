@@ -1,9 +1,8 @@
-package com.polytech.ndames;
+package com.polytech.ndames.genetic;
 
 import com.atles.genetic_harvester.NumericGene;
 import com.atles.genetic_harvester.Phenotype;
 import com.atles.genetic_harvester.Population;
-import com.atles.genetic_harvester.operator.Evaluator;
 
 import java.util.List;
 
