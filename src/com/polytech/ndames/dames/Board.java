@@ -1,5 +1,7 @@
 package com.polytech.ndames.dames;
 
+import com.atles.genetic_harvester.Factory;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,10 +9,38 @@ import java.util.List;
  *
  * Created by Jérémy on 15/03/2017.
  */
-public class Board {
+public class Board implements Factory<Board> {
+    //Fiels
     private List<Dame> dames;
+    private int size;
 
-    public Board() {
-        this.dames = new ArrayList<>();
+    //Constructors
+    public Board(int size) {
+        this.dames = new ArrayList<>(size);
+        this.size = size;
+    }
+    public Board(List<Dame> dames) {
+        this.dames = dames;
+        size = dames.size();
+    }
+
+    //Getters & Setters
+    public List<Dame> getDames() {
+        return dames;
+    }
+
+    public int getSize() {
+        return size;
+    }
+
+    //Implemented Methods
+    @Override
+    public Board newInstance() {
+        List<Dame> dames = new ArrayList<>();
+        for (Dame dame : this.dames)
+        {
+            dames.add(dame.newInstance());
+        }
+        return new Board(dames);
     }
 }
