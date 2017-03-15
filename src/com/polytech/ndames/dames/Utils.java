@@ -73,6 +73,25 @@ public class Utils {
 
     public static float getFistness(Board board)
     {
-        return 0;
+        float fitness = 0;
+        int size = board.getSize();
+        float conflicts = 0.00001f;
+
+        for(int row = 0; row < size; row++)
+        {
+            Dame dame = board.getDames().get(row);
+            for (int row_bis = row+1; row_bis < size; row_bis++)
+            {
+                Dame dame_bis = board.getDames().get(row_bis);
+
+                if(dame.getColumn() == dame_bis.getColumn())
+                    conflicts++;
+                if(row_bis - row == Math.abs(dame.getColumn() - dame_bis.getColumn()))
+                    conflicts++;
+            }
+        }
+
+        fitness = 1f / conflicts;
+        return fitness;
     }
 }
