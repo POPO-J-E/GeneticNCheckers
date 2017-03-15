@@ -83,8 +83,6 @@ public abstract class Harvester<G extends Gene<?, G>> {
             this.bestPhenotype = this.population.getBestPhenotype();
 
         System.out.println("Best fitness : " + this.getPopulation().getBestPhenotype().getFitness());
-        if(this.getPopulation().getBestPhenotype().getFitness() ==0)
-            System.exit(0);
         System.out.println("Average fitness : " + this.getPopulation().getTotalFitness() / this.getPopulation().getSize());
         System.out.println("Best phenotype : ");
         this.getPopulation().getBestPhenotype().render();
@@ -95,15 +93,13 @@ public abstract class Harvester<G extends Gene<?, G>> {
         population.getPopulation().sort(new Comparator<Phenotype<G>>() {
             @Override
             public int compare(Phenotype<G> phenotype, Phenotype<G> phenotype_bis) {
-                return phenotype.getFitness() < phenotype_bis.getFitness() ? 1 : 0;
+                return Float.compare(phenotype_bis.getFitness(), phenotype.getFitness());
             }
         });
 
         Population<G> nextGen = new Population<>(population.getGeneration() + 1);
 
-        nextGen.addPhenotype(population.getBestPhenotype().newInstance());
-
-        while (nextGen.getSize() < this.size * 0.90f) {
+        while (nextGen.getSize() < this.size) {
 
             try {
                 Couple<G> parents = selector.select(population);
@@ -123,7 +119,7 @@ public abstract class Harvester<G extends Gene<?, G>> {
         //add best phenotypes with ratio
         int i = 0;
         while (nextGen.getSize() < this.size) {
-            nextGen.addPhenotype(population.getPopulation().get(i).newInstance().canMutate(false));
+            nextGen.addPhenotype(population.getPopulation().get(i).newInstance().canMutate(true));
             i++;
         }
 

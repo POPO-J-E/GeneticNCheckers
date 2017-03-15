@@ -60,5 +60,6 @@ public class VariableMutator<G extends Gene<?, G>> extends BasicMutator<G> {
         }
 
         this.lastFitness = population.getBestFitness();
+        System.out.println(mutatorRatio);
     }
 }

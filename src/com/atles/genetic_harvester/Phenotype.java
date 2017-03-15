@@ -12,7 +12,7 @@ public class Phenotype<G extends Gene<?, G>> implements Factory<Phenotype<G>>, S
     public Phenotype(Genotype<G> genotype) {
         this.setGenotype(genotype);
         this.fitness = 0;
-        this.canMutate = false;
+        this.canMutate = true;
     }
 
     public float getFitness() {
