@@ -141,6 +141,7 @@ public abstract class Harvester<G extends Gene<?, G>> {
 
     public void updateOperators() {
         this.mutator.update(this.population);
+        this.evaluator.update(this.population);
     }
 
     protected boolean solutionFinded()

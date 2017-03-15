@@ -82,4 +82,9 @@ public class DameEvaluator implements Evaluator<NumericGene> {
 
         return board;
     }
+
+    @Override
+    public void update(Population<NumericGene> population) {
+
+    }
 }

@@ -18,4 +18,8 @@ public class TournamentEvaluator<G extends Gene<?, G>> implements Evaluator<G> {
         bracket.begin();
     }
 
+    @Override
+    public void update(Population<G> population) {
+
+    }
 }
