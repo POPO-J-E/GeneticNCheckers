@@ -70,4 +70,9 @@ public class Utils {
         int aleaIndex = rand.nextInt(board.getSize());
         return getNeighbours(board).get(aleaIndex);
     }
+
+    public static float getFistness(Board board)
+    {
+        return 0;
+    }
 }
