@@ -48,4 +48,9 @@ public class DameEvaluatorV4 implements Evaluator<NumericGene> {
 
         dame.setFitness(fitness);
     }
+
+    @Override
+    public void update(Population<NumericGene> population) {
+
+    }
 }

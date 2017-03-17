@@ -4,6 +4,7 @@ import com.atles.genetic_harvester.NumericGene;
 import com.atles.genetic_harvester.Phenotype;
 import com.atles.genetic_harvester.Population;
 import com.atles.genetic_harvester.operator.Evaluator;
+import com.atles.genetic_harvester.operator.Operator;
 
 import java.util.List;
 
@@ -26,7 +27,7 @@ public class DameEvaluatorV3 implements Evaluator<NumericGene> {
     {
         float fitness = 0;
         int size = dame.getChromosome(0).getLength();
-        float conflicts = 0.00001f;
+        int conflicts = 0;
 
         for(int row = 0; row < size; row++)
         {
@@ -42,8 +43,11 @@ public class DameEvaluatorV3 implements Evaluator<NumericGene> {
             }
         }
 
-
-        fitness = 1f / conflicts;
+        fitness = 1 / (conflicts+0.0001f);
         dame.setFitness(fitness);
+    }
+
+    @Override
+    public void update(Population<NumericGene> population) {
     }
 }
