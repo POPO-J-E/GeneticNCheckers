@@ -1,6 +1,7 @@
 package com.polytech.ndames.dames;
 
 import com.atles.genetic_harvester.Factory;
+import com.atles.genetic_harvester.operator.UniformCrossOver;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,5 +43,13 @@ public class Board implements Factory<Board> {
             dames.add(dame.newInstance());
         }
         return new Board(dames);
+    }
+
+    @Override
+    public String toString() {
+        return "Board{" +
+                "size=" + size +
+                ", fitness=" + Utils.getFistness(this) +
+                '}';
     }
 }

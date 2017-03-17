@@ -75,7 +75,7 @@ public class Utils {
     {
         float fitness = 0;
         int size = board.getSize();
-        float conflicts = 0.00001f;
+        float conflicts = 0;
 
         for(int row = 0; row < size; row++)
         {
@@ -91,7 +91,7 @@ public class Utils {
             }
         }
 
-        fitness = 1f / conflicts;
+        fitness = conflicts;
         return fitness;
     }
 }

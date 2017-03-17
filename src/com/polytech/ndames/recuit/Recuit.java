@@ -5,6 +5,8 @@ import com.polytech.ndames.dames.BoardFactory;
 import com.polytech.ndames.dames.Dame;
 import com.polytech.ndames.dames.Utils;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -13,24 +15,82 @@ import java.util.Random;
  */
 public class Recuit {
 
+    private int size = 8;
+    private float deltaf;
+    
     private Board initialBoard;
-    private int size;
+    private Board bestBoard;
+    
+    private Float fitness;
+    
     private int nbIteration;
-    private int i=0;
-    private double temperature;
-    private Random rand = new Random();
-    private BoardFactory boardFactory = new BoardFactory();
+    
+    private float temperature;
+    private float alpha;
+    
+    private Random rand;
+    private BoardFactory boardFactory;
 
-    public void start(){
-        initialBoard = boardFactory.buildBoard(size);
-        temperature = 0.5;
-
-        while(i < nbIteration)
-        {
-            Board aleaBoard = Utils.getAleaNeighbour(initialBoard);
-
-        }
+    public Recuit(int size, int nbIteration, float alpha) {
+        this.size = size;
+        this.nbIteration = nbIteration;
+        this.alpha = alpha;
+        this.rand = new Random();
+        this.boardFactory = new BoardFactory();
     }
 
+    public Board start(){
+        initialBoard = boardFactory.buildBoard(size);
+        bestBoard = initialBoard;
+
+        Board currentBoard = initialBoard;
+        deltaf = getHighDeltaF(10);
+        temperature = (float) (-deltaf/Math.log(0.8));
+        System.out.println("Temp = " + temperature);
+        int n1 = generateN1();
+        System.out.println("N1 = " + n1);
+
+        for (int j = 0; j < n1; j++) {
+            for (int k = 1; k < nbIteration; k++) {
+                Board aleaNeighbour = Utils.getAleaNeighbour(currentBoard);
+                System.out.println("alea=" +aleaNeighbour);
+
+                deltaf = Utils.getFistness(aleaNeighbour) - Utils.getFistness(currentBoard);
+                if (deltaf<=0)
+                {
+                    currentBoard = aleaNeighbour;
+                    if(Utils.getFistness(currentBoard) < Utils.getFistness(bestBoard))
+                    {
+                        bestBoard = aleaNeighbour;
+                        System.out.println(Utils.getFistness(bestBoard));
+                        if (Utils.getFistness(bestBoard) == 0)
+                            return bestBoard;
+                    }
+                }
+                else {
+                    if (rand.nextFloat() <= Math.exp(-deltaf/temperature))
+                        currentBoard = aleaNeighbour;
+                }
+            }
+            temperature *= alpha;
+            System.out.println(bestBoard);
+        }
+        return bestBoard;
+    }
+
+    public int generateN1()
+    {
+        return (int) (Math.log(-deltaf/(temperature*Math.log(0.01)))/Math.log(alpha));
+    }
+
+    public float getHighDeltaF(int nb)
+    {
+        float sum=0;
+        for (int i = 0; i < nb; i++) {
+            sum += Utils.getFistness(boardFactory.buildBoard(size));
+        }
+
+        return sum/nb;
+    }
 
 }

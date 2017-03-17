@@ -7,7 +7,8 @@ public class Main {
 
     public static void main(String[] args)
     {
-
+        Recuit recuit = new Recuit(8,10000,0.90f);
+        recuit.start();
     }
 
 }
