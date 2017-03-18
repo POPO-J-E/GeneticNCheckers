@@ -52,7 +52,8 @@ public class Recuit {
 
         for (int j = 0; j < n1; j++) {
             for (int k = 1; k < nbIteration; k++) {
-                Board aleaNeighbour = Utils.getAleaNeighbour(currentBoard);
+                Board aleaNeighbour = Utils.getRandomNeighbour(currentBoard);
+//                Board aleaNeighbour = Utils.getAleaNeighbour(currentBoard);
                 System.out.println("alea=" +aleaNeighbour);
 
                 deltaf = Utils.getFistness(aleaNeighbour) - Utils.getFistness(currentBoard);

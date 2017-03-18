@@ -3,12 +3,30 @@ package com.polytech.ndames.dames;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 /**
  *
  * Created by jeremy on 15/03/2017.
  */
 public class Utils {
+
+    public static Random rand = new Random();
+    public static MoveFactory moveFactory = new MoveFactory();
+
+    public static Board getNeighbour(Board board, Move move)
+    {
+        Board newBoard = board.newInstance();
+        Dame dame = newBoard.getDames().get(move.getDame());
+        dame.setColumn(dame.getColumn() + move.getVelocity() % newBoard.getSize());
+        return newBoard;
+    }
+
+    public static Board getRandomNeighbour(Board board)
+    {
+        Move move = moveFactory.buildRandomMove(board.getSize());
+        return getNeighbour(board, move);
+    }
 
     public static List<Board> getNeighbours(Board board)
     {
@@ -18,6 +36,11 @@ public class Utils {
             neighboursBoards.addAll(getNeighbours(board, i));
         }
         return neighboursBoards;
+    }
+
+    public static List<Board> getNeighbours(Board board, List<Move> moves)
+    {
+        return moves.stream().map(move -> getNeighbour(board, move)).collect(Collectors.toList());
     }
 
     public static List<Board> getNeighbours(Board board, int nbDame)
