@@ -3,6 +3,7 @@ package com.polytech.ndames.tabou;
 import com.polytech.ndames.dames.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 /**
@@ -13,30 +14,23 @@ public class Tabou {
 
     private final int tabouSize;
     private int size = 8;
-    private float deltaf;
     
     private Board initialBoard;
     private Board bestBoard;
     private float bestFitness;
     
-    private Float fitness;
-    
     private int nbIteration;
-    
-    private float temperature;
-    private float alpha;
-    
+
     private Random rand;
     private BoardFactory boardFactory;
 
     private LimitedQueue<Move> fifo;
     private List<Move> moves;
 
-    public Tabou(int size, int tabouSize, int nbIteration, float alpha) {
+    public Tabou(int size, int tabouSize, int nbIteration) {
         this.size = size;
         this.tabouSize = tabouSize;
         this.nbIteration = nbIteration;
-        this.alpha = alpha;
         this.rand = new Random();
         this.boardFactory = new BoardFactory();
     }
@@ -54,28 +48,129 @@ public class Tabou {
         int i = 0;
         do
         {
-            List<Board> neighbours = Utils.getNeighbours(currentBoard, moves);
+            Map<Move, Board> neighbours = Utils.getNeighbours(currentBoard, moves);
 
             Board localBestBoard = null;
+            Move localMove = null;
             float localBestFitness = Float.MAX_VALUE;
 
-            for(Board neighbour : neighbours)
-            {
-                float fitness = Utils.getFistness(neighbour);
+            for (Map.Entry<Move, Board> entry : neighbours.entrySet()) {
+                Move move = entry.getKey();
+                Board board = entry.getValue();
+
+                System.out.println("neighbour : " + board);
+
+                float fitness = Utils.getFistness(board);
                 if(fitness < localBestFitness)
                 {
                     localBestFitness = fitness;
-                    localBestBoard = neighbour;
+                    localBestBoard = board;
+                    localMove = move;
                 }
             }
 
-            if(localBestFitness > currentFitness)
+            if(localBestFitness >= currentFitness){
+                forbidMove(localMove);
+            }
+            else if(localBestFitness < bestFitness)
+            {
+                bestFitness = localBestFitness;
+                bestBoard = localBestBoard;
+            }
 
+            currentFitness = localBestFitness;
+            currentBoard = localBestBoard;
 
             i++;
         }
         while (i < nbIteration && bestFitness > 0);
 
+        System.out.println("best board : "+bestBoard);
         return bestBoard;
+    }
+
+    private void forbidMove(Move move)
+    {
+        Move opposite = Utils.getOposite(moves, move, size);
+        moves.remove(opposite);
+        Move popMove = this.fifo.addElement(opposite);
+        if(popMove != null)
+            this.moves.add(popMove);
+    }
+
+    public int getTabouSize() {
+        return tabouSize;
+    }
+
+    public int getSize() {
+        return size;
+    }
+
+    public void setSize(int size) {
+        this.size = size;
+    }
+
+    public Board getInitialBoard() {
+        return initialBoard;
+    }
+
+    public void setInitialBoard(Board initialBoard) {
+        this.initialBoard = initialBoard;
+    }
+
+    public Board getBestBoard() {
+        return bestBoard;
+    }
+
+    public void setBestBoard(Board bestBoard) {
+        this.bestBoard = bestBoard;
+    }
+
+    public float getBestFitness() {
+        return bestFitness;
+    }
+
+    public void setBestFitness(float bestFitness) {
+        this.bestFitness = bestFitness;
+    }
+
+    public int getNbIteration() {
+        return nbIteration;
+    }
+
+    public void setNbIteration(int nbIteration) {
+        this.nbIteration = nbIteration;
+    }
+
+    public Random getRand() {
+        return rand;
+    }
+
+    public void setRand(Random rand) {
+        this.rand = rand;
+    }
+
+    public BoardFactory getBoardFactory() {
+        return boardFactory;
+    }
+
+    public void setBoardFactory(BoardFactory boardFactory) {
+        this.boardFactory = boardFactory;
+    }
+
+    public LimitedQueue<Move> getFifo() {
+        return fifo;
+    }
+
+    public void setFifo(LimitedQueue<Move> fifo) {
+        this.fifo = fifo;
+    }
+
+    public List<Move> getMoves() {
+        return moves;
+    }
+
+    public void setMoves(List<Move> moves) {
+        this.moves = moves;
     }
 }

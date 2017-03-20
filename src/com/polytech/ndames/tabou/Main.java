@@ -7,7 +7,7 @@ public class Main {
 
     public static void main(String[] args)
     {
-        Tabou tabou = new Tabou(256,10000,0.90f);
+        Tabou tabou = new Tabou(16, 2,10000);
         tabou.start();
     }
 

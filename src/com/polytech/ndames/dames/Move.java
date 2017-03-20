@@ -32,7 +32,7 @@ public class Move
 
     @Override
     public String toString() {
-        return dame + "-" + velocity;
+        return "Move{"+dame + "-" + velocity+"}";
     }
 
     public boolean equals(Object obj)
@@ -40,8 +40,13 @@ public class Move
         return this.toString().equals(obj.toString());
     }
 
-    public String oposite(int size)
+    public String opposite(int size)
     {
-        return dame + "-" + (size-velocity);
+        return "Move{"+dame + " - " + (size-velocity)+"}";
+    }
+
+    public boolean isOpposite(Move move, int size)
+    {
+        return (move.getDame() == dame) && ((size-velocity-1) == move.getVelocity());
     }
 }

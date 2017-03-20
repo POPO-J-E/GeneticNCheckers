@@ -21,4 +21,13 @@ public class LimitedQueue<E> extends LinkedList<E> {
         }
         return added;
     }
+
+    public E addElement(E o) {
+        boolean added = super.add(o);
+        E removed = null;
+        while (added && size() > limit) {
+            removed = super.remove();
+        }
+        return removed;
+    }
 }
