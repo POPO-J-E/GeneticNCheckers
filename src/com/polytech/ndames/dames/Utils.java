@@ -9,9 +9,9 @@ import java.util.*;
 public class Utils {
 
     public static Random rand = new Random();
-    public static MoveFactory moveFactory = new MoveFactory();
+    public static MoveFactory moveFactory = new BasicMoveFactory();
 
-    public static Board getNeighbour(Board board, Move move)
+    public static Board getNeighbour(Board board, BasicMove move)
     {
         Board newBoard = board.newInstance();
         Dame dame = newBoard.getDames().get(move.getDame());
@@ -21,7 +21,7 @@ public class Utils {
 
     public static Board getRandomNeighbour(Board board)
     {
-        Move move = moveFactory.buildRandomMove(board.getSize());
+        BasicMove move = (BasicMove)moveFactory.buildRandomMove(board.getSize());
         return getNeighbour(board, move);
     }
 
@@ -38,7 +38,7 @@ public class Utils {
     public static Map<Move, Board> getNeighbours(Board board, List<Move> moves)
     {
         Map<Move, Board> neighbours = new HashMap<>();
-        moves.forEach(move->neighbours.put(move, getNeighbour(board, move)));
+        moves.forEach(move->neighbours.put(move, move.apply(board)));
         return neighbours;
     }
 
@@ -117,7 +117,7 @@ public class Utils {
         return fitness;
     }
 
-    public static Move getOposite(List<Move> moves, Move move, int size)
+    public static Move getOpposite(List<Move> moves, Move move, int size)
     {
         for (Move m : moves) {
             if(move.isOpposite(m, size))

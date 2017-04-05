@@ -23,20 +23,23 @@ public class Tabou {
 
     private Random rand;
     private BoardFactory boardFactory;
+    private MoveFactory moveFactory;
 
     private LimitedQueue<Move> fifo;
     private List<Move> moves;
 
-    public Tabou(int size, int tabouSize, int nbIteration) {
+    public Tabou(int size, int tabouSize, int nbIteration, BoardFactory boardFactory, MoveFactory moveFactory) {
         this.size = size;
         this.tabouSize = tabouSize;
         this.nbIteration = nbIteration;
         this.rand = new Random();
-        this.boardFactory = new BoardFactory();
+        this.boardFactory = boardFactory;
+        this.moveFactory = moveFactory;
     }
 
     public Board start(){
-        moves = Utils.moveFactory.buildAllMoves(size);
+        moves = moveFactory.buildAllMoves(size);
+        System.out.println("Nbr moves : "+moves.size());
         fifo = new LimitedQueue<>(tabouSize);
 
         initialBoard = boardFactory.buildBoard(size);
@@ -54,11 +57,10 @@ public class Tabou {
             Move localMove = null;
             float localBestFitness = Float.MAX_VALUE;
 
+            Long start = System.currentTimeMillis();
             for (Map.Entry<Move, Board> entry : neighbours.entrySet()) {
                 Move move = entry.getKey();
                 Board board = entry.getValue();
-
-                System.out.println("neighbour : " + board);
 
                 float fitness = Utils.getFistness(board);
                 if(fitness < localBestFitness)
@@ -68,6 +70,7 @@ public class Tabou {
                     localMove = move;
                 }
             }
+            System.out.println("Iteration duration :" + ((System.currentTimeMillis() - start)/1000.0) + "s");
 
             if(localBestFitness >= currentFitness){
                 forbidMove(localMove);
@@ -81,6 +84,8 @@ public class Tabou {
             currentFitness = localBestFitness;
             currentBoard = localBestBoard;
 
+            System.out.println("best neighbour : " + currentBoard);
+
             i++;
         }
         while (i < nbIteration && bestFitness > 0);
@@ -91,7 +96,7 @@ public class Tabou {
 
     private void forbidMove(Move move)
     {
-        Move opposite = Utils.getOposite(moves, move, size);
+        Move opposite = Utils.getOpposite(moves, move, size);
         moves.remove(opposite);
         Move popMove = this.fifo.addElement(opposite);
         if(popMove != null)

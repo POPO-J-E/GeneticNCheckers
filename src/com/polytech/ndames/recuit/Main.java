@@ -7,7 +7,7 @@ public class Main {
 
     public static void main(String[] args)
     {
-        Recuit recuit = new Recuit(256,10000,0.90f);
+        Recuit recuit = new Recuit(500,10000,0.95f);
         recuit.start();
     }
 

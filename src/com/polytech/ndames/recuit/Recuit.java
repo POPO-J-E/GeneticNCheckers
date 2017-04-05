@@ -1,9 +1,6 @@
 package com.polytech.ndames.recuit;
 
-import com.polytech.ndames.dames.Board;
-import com.polytech.ndames.dames.BoardFactory;
-import com.polytech.ndames.dames.Dame;
-import com.polytech.ndames.dames.Utils;
+import com.polytech.ndames.dames.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,12 +28,20 @@ public class Recuit {
     private Random rand;
     private BoardFactory boardFactory;
 
-    public Recuit(int size, int nbIteration, float alpha) {
+    private float gamma;
+
+    public Recuit(int size, int nbIteration, float alpha, float gamma) {
         this.size = size;
         this.nbIteration = nbIteration;
         this.alpha = alpha;
         this.rand = new Random();
-        this.boardFactory = new BoardFactory();
+        this.boardFactory = new RandomBoardFactory();
+        this.gamma = gamma;
+    }
+
+    public Recuit(int size, int nbIteration, float alpha)
+    {
+        this(size, nbIteration, alpha, 0.00001F);
     }
 
     public Board start(){
