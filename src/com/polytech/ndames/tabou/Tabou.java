@@ -29,6 +29,10 @@ public class Tabou implements Resolver {
     private LimitedQueue<Move> fifo;
     private List<Move> moves;
 
+    public Tabou() {
+        this(8, 2, 10000, new OnePerColBoardFactory(), new BasicMoveFactoryLimit());
+    }
+
     public Tabou(int size, int tabouSize, int nbIteration, BoardFactory boardFactory, MoveFactory moveFactory) {
         this.size = size;
         this.tabouSize = tabouSize;

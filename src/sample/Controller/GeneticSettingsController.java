@@ -12,7 +12,7 @@ import java.util.ResourceBundle;
  */
 public class GeneticSettingsController extends SettingsController {
     public GeneticSettingsController() {
-        super("Genetic Settings","/sample/Resources/img_dna.png", Recuit::new);
+        super("Genetic SettingsInput","/sample/Resources/img_dna.png", Recuit::new);
     }
 
     @Override

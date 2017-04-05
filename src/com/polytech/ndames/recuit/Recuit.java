@@ -74,7 +74,7 @@ public class Recuit implements Resolver {
                         bestBoard = aleaNeighbour;
                         System.out.println(Utils.getFistness(bestBoard));
                         if (Utils.getFistness(bestBoard) == 0)
-                            return;
+                            return bestBoard;
                     }
                 }
                 else {
@@ -85,6 +85,8 @@ public class Recuit implements Resolver {
             temperature *= alpha;
             System.out.println(bestBoard);
         }
+
+        return bestBoard;
     }
 
     public int generateN1()
@@ -102,4 +104,35 @@ public class Recuit implements Resolver {
         return sum/nb;
     }
 
+    public int getSize() {
+        return size;
+    }
+
+    public void setSize(int size) {
+        this.size = size;
+    }
+
+    public int getNbIteration() {
+        return nbIteration;
+    }
+
+    public void setNbIteration(int nbIteration) {
+        this.nbIteration = nbIteration;
+    }
+
+    public float getAlpha() {
+        return alpha;
+    }
+
+    public void setAlpha(float alpha) {
+        this.alpha = alpha;
+    }
+
+    public float getGamma() {
+        return gamma;
+    }
+
+    public void setGamma(float gamma) {
+        this.gamma = gamma;
+    }
 }

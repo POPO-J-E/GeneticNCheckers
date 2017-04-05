@@ -8,8 +8,13 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
+import sample.Controller.SettingsController;
+import sample.setttings.NumberTextFieldSettingsInput;
+import sample.setttings.SettingsInput;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -18,41 +23,54 @@ import java.util.Map;
  */
 public class SettingsBuilder {
 
-    private Map<String, Control> settings;
-
+    private List<SettingsInput> inputs;
 
     public SettingsBuilder() {
-        settings = new HashMap<>();
+        inputs = new ArrayList<>();
     }
 
-    public SettingsBuilder add(String label, Control control){
-        settings.put(label, control);
+    public SettingsBuilder add(String label, String description){
+        inputs.add(new NumberTextFieldSettingsInput(label, description));
         return this;
     }
 
-    public GridPane build(){
+    public SettingsBuilder add(SettingsInput input){
+        inputs.add(input);
+        return this;
+    }
+
+    public GridPane build(SettingsController settingsController){
         ColumnConstraints column1 = new ColumnConstraints();
         column1.setPercentWidth(45);
         GridPane gridPane = new GridPane();
         gridPane.setPadding(new Insets(8));
         gridPane.getColumnConstraints().add(column1);
         int row = 0;
-        for (Map.Entry<String,Control> entry : settings.entrySet())
+        for (SettingsInput input : inputs)
         {
-            buildInput(gridPane,entry.getKey(),entry.getValue(),row++);
+            buildInput(settingsController, gridPane, input, row++);
         }
         return gridPane;
     }
 
-    private void buildInput(GridPane grid, String label, Control control, int row)
+    private void buildInput(SettingsController settingsController, GridPane grid, SettingsInput input, int row)
     {
-        grid.add(new Label(label),0,row);
-        grid.add(control,1,row);
+        grid.add(new Label(input.getLabel()),0,row);
+        grid.add(input.getControl(),1,row);
 
         RowConstraints rowConstraint = new RowConstraints();
         rowConstraint.setPrefHeight(30);
         grid.getRowConstraints().add(rowConstraint);
 
+        input.setController(settingsController);
+
+        try {
+            input.updateControlFromResolver(settingsController.getResolver());
+        }
+        catch (NullPointerException e)
+        {
+            e.printStackTrace();
+        }
     }
 
 }

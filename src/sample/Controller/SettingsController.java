@@ -9,15 +9,12 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.VBox;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import sample.Utils.Resolver;
 import sample.Utils.ResolverFactory;
 import sample.Utils.SettingsBuilder;
+import sample.setttings.SettingsInput;
 
 import java.io.IOException;
 import java.net.URL;
@@ -74,13 +71,13 @@ public abstract class SettingsController<R extends Resolver> implements Initiali
         img_algorithm.setImage(new Image(imgUrl));
         lb_titleAlgorithm.setText(titleWindow);
         buildSettings(builder);
-        anchor_settings.getChildren().add(builder.build());
+        anchor_settings.getChildren().add(builder.build(this));
 //        btn_start.setOnMouseClicked(e->startResolve());
 
         btn_start.setOnMouseClicked(e-> startResolve());
     }
 
-    protected void setTitleDescription(String title, String description)
+    protected void setTitleAndDescription(String title, String description)
     {
         lb_descriptionAlgorithm.setText(description);
         lb_InputLabel.setText(title);
@@ -94,4 +91,11 @@ public abstract class SettingsController<R extends Resolver> implements Initiali
 
     public abstract void buildSettings(SettingsBuilder builder);
 
+    public void onDisplayDescription(SettingsInput<R, ?, ?> input) {
+        this.setTitleAndDescription(input.getLabel(), input.getDescription());
+    }
+
+    public R getResolver() {
+        return resolver;
+    }
 }
