@@ -4,6 +4,7 @@ import com.polytech.ndames.dames.Board;
 import com.polytech.ndames.dames.BoardFactory;
 import com.polytech.ndames.dames.Dame;
 import com.polytech.ndames.dames.Utils;
+import sample.Utils.Resolver;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +14,7 @@ import java.util.Random;
  *
  * Created by jeremy on 15/03/2017.
  */
-public class Recuit {
+public class Recuit implements Resolver{
 
     private int size = 8;
     private float deltaf;
@@ -39,7 +40,11 @@ public class Recuit {
         this.boardFactory = new BoardFactory();
     }
 
-    public Board start(){
+    public Recuit() {
+        this(8, 100, 0.9f);
+    }
+
+    public void start(){
         initialBoard = boardFactory.buildBoard(size);
         bestBoard = initialBoard;
 
@@ -65,7 +70,7 @@ public class Recuit {
                         bestBoard = aleaNeighbour;
                         System.out.println(Utils.getFistness(bestBoard));
                         if (Utils.getFistness(bestBoard) == 0)
-                            return bestBoard;
+                            return;
                     }
                 }
                 else {
@@ -76,7 +81,6 @@ public class Recuit {
             temperature *= alpha;
             System.out.println(bestBoard);
         }
-        return bestBoard;
     }
 
     public int generateN1()

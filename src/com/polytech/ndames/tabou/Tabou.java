@@ -1,6 +1,7 @@
 package com.polytech.ndames.tabou;
 
 import com.polytech.ndames.dames.*;
+import sample.Utils.Resolver;
 
 import java.util.List;
 import java.util.Random;
@@ -9,7 +10,7 @@ import java.util.Random;
  *
  * Created by jeremy on 15/03/2017.
  */
-public class Tabou {
+public class Tabou implements Resolver {
 
     private final int tabouSize;
     private int size = 8;
@@ -41,7 +42,11 @@ public class Tabou {
         this.boardFactory = new BoardFactory();
     }
 
-    public Board start(){
+    public Tabou() {
+        tabouSize = 0;
+    }
+
+    public void start(){
         moves = Utils.moveFactory.buildAllMoves(size);
         fifo = new LimitedQueue<>(tabouSize);
 
@@ -75,7 +80,5 @@ public class Tabou {
             i++;
         }
         while (i < nbIteration && bestFitness > 0);
-
-        return bestBoard;
     }
 }
