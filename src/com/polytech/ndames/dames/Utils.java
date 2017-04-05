@@ -1,9 +1,6 @@
 package com.polytech.ndames.dames;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.stream.Collectors;
+import java.util.*;
 
 /**
  *
@@ -12,9 +9,9 @@ import java.util.stream.Collectors;
 public class Utils {
 
     public static Random rand = new Random();
-    public static MoveFactory moveFactory = new MoveFactory();
+    public static MoveFactory moveFactory = new BasicMoveFactory();
 
-    public static Board getNeighbour(Board board, Move move)
+    public static Board getNeighbour(Board board, BasicMove move)
     {
         Board newBoard = board.newInstance();
         Dame dame = newBoard.getDames().get(move.getDame());
@@ -24,7 +21,7 @@ public class Utils {
 
     public static Board getRandomNeighbour(Board board)
     {
-        Move move = moveFactory.buildRandomMove(board.getSize());
+        BasicMove move = (BasicMove)moveFactory.buildRandomMove(board.getSize());
         return getNeighbour(board, move);
     }
 
@@ -38,9 +35,11 @@ public class Utils {
         return neighboursBoards;
     }
 
-    public static List<Board> getNeighbours(Board board, List<Move> moves)
+    public static Map<Move, Board> getNeighbours(Board board, List<Move> moves)
     {
-        return moves.stream().map(move -> getNeighbour(board, move)).collect(Collectors.toList());
+        Map<Move, Board> neighbours = new HashMap<>();
+        moves.forEach(move->neighbours.put(move, move.apply(board)));
+        return neighbours;
     }
 
     public static List<Board> getNeighbours(Board board, int nbDame)
@@ -116,5 +115,20 @@ public class Utils {
 
         fitness = conflicts;
         return fitness;
+    }
+
+    public static Move getOpposite(List<Move> moves, Move move, int size)
+    {
+        for (Move m : moves) {
+            if(move.isOpposite(m, size))
+                return m;
+        }
+
+        try {
+            return null;
+        }
+        finally {
+            System.out.println("No opposite move.");
+        }
     }
 }

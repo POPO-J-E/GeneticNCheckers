@@ -1,20 +1,16 @@
 package com.polytech.ndames.recuit;
 
-import com.polytech.ndames.dames.Board;
-import com.polytech.ndames.dames.BoardFactory;
-import com.polytech.ndames.dames.Dame;
-import com.polytech.ndames.dames.Utils;
+
+import com.polytech.ndames.dames.*;
 import sample.Utils.Resolver;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 /**
  *
  * Created by jeremy on 15/03/2017.
  */
-public class Recuit implements Resolver{
+public class Recuit implements Resolver {
 
     private int size = 8;
     private float deltaf;
@@ -32,19 +28,27 @@ public class Recuit implements Resolver{
     private Random rand;
     private BoardFactory boardFactory;
 
-    public Recuit(int size, int nbIteration, float alpha) {
+    private float gamma;
+
+    public Recuit(int size, int nbIteration, float alpha, float gamma) {
         this.size = size;
         this.nbIteration = nbIteration;
         this.alpha = alpha;
         this.rand = new Random();
-        this.boardFactory = new BoardFactory();
+        this.boardFactory = new RandomBoardFactory();
+        this.gamma = gamma;
+    }
+
+    public Recuit(int size, int nbIteration, float alpha)
+    {
+        this(size, nbIteration, alpha, 0.00001F);
     }
 
     public Recuit() {
         this(8, 100, 0.9f);
     }
 
-    public void start(){
+    public Board start(){
         initialBoard = boardFactory.buildBoard(size);
         bestBoard = initialBoard;
 

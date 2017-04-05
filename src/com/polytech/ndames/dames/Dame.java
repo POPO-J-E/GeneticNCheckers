@@ -39,4 +39,12 @@ public class Dame implements Factory<Dame>{
     public Dame newInstance() {
         return new Dame(row, column);
     }
+
+    @Override
+    public String toString() {
+        return "Dame{" +
+                "" + row +
+                " - " + column +
+                '}';
+    }
 }
