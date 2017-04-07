@@ -11,7 +11,10 @@ import javafx.scene.chart.AreaChart;
 import javafx.scene.chart.Chart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+import sample.Utils.EvolvingInputBuilder;
 import sample.Utils.Resolver;
 
 import java.io.IOException;
@@ -24,15 +27,18 @@ import java.util.ResourceBundle;
  *
  * Created by jeremy on 28/03/2017.
  */
-public class EvolvingController<R extends Resolver<R>> implements Initializable, Observer {
+public abstract class EvolvingController<R extends Resolver<R>> implements Initializable, Observer {
     @FXML
     private AreaChart<Number,Number> chart_evolution;
 
-    private R resolver;
+    @FXML
+    public AnchorPane anchor_inputs;
 
-    public EvolvingController(R resolver) {
-        this.resolver = resolver;
-        resolver.addObserver(this);
+    private R resolver;
+    private EvolvingInputBuilder<R> builder;
+
+    public EvolvingController() {
+        this.builder = new EvolvingInputBuilder<R>();
     }
 
     @Override
@@ -73,10 +79,18 @@ public class EvolvingController<R extends Resolver<R>> implements Initializable,
 
         chart_evolution.getData().addAll(seriesApril, seriesMay);
 
+        buildSettings(builder);
+        anchor_inputs.getChildren().add(builder.build(this));
     }
 
-    void open()
+    public abstract void buildSettings(EvolvingInputBuilder<R> builder);
+
+
+    void open(R resolver)
     {
+        this.resolver = resolver;
+        resolver.addObserver(this);
+
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../View/evolving.fxml"));
             fxmlLoader.setController(this);
@@ -103,12 +117,18 @@ public class EvolvingController<R extends Resolver<R>> implements Initializable,
     }
 
     @Override
-    public void update(Observable observable, Object o) {
+    public synchronized void update(Observable observable, Object o) {
         if(o instanceof Board)
+        {
             this.updateInfos((Board)o);
+        }
+
+        this.builder.updateInputs(resolver);
     }
 
-    private void updateInfos(Board board) {
-        System.out.println("sout "+Utils.getFistness(board));
+    protected abstract void updateInfos(Board board);
+
+    public R getResolver() {
+        return resolver;
     }
 }

@@ -1,5 +1,6 @@
 package sample.setttings;
 
+import javafx.application.Platform;
 import javafx.scene.control.Control;
 import sample.Controller.SettingsController;
 import sample.Utils.Resolver;
@@ -26,7 +27,7 @@ public class SettingsInput<R extends Resolver<R>, C extends Control, V>
 
     private SettingsController<R> controller;
 
-    public SettingsInput(String label, String description, C control, Function<C, V> controlValueGetter, BiConsumer<C, V> controlValueSetter, Function<R, V> resolverValueGetter, BiConsumer<R, V> resolverValueSetter) {
+    private SettingsInput(String label, String description, C control, Function<C, V> controlValueGetter, BiConsumer<C, V> controlValueSetter, Function<R, V> resolverValueGetter, BiConsumer<R, V> resolverValueSetter) {
         this.label = label;
         this.description = description;
         this.control = control;
@@ -122,7 +123,7 @@ public class SettingsInput<R extends Resolver<R>, C extends Control, V>
 
     public void updateControlFromResolver(R resolver) throws NullPointerException
     {
-        this.controlValueSetter.accept(control, this.getResolverValue(resolver));
+        Platform.runLater(() -> controlValueSetter.accept(control, getResolverValue(resolver)));
     }
 
     public V getControlValue() throws NullPointerException

@@ -11,6 +11,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import sample.Controller.factory.EvolvingControllerFactory;
 import sample.Utils.Resolver;
 import sample.Utils.ResolverFactory;
 import sample.Utils.SettingsBuilder;
@@ -43,11 +44,14 @@ public abstract class SettingsController<R extends Resolver<R>> implements Initi
     private String titleWindow;
     private String imgUrl;
 
-    public SettingsController(String titleWindow, String imgUrl, ResolverFactory<R> factory) {
+    private  EvolvingControllerFactory<R> evolvingControllerFactory;
+
+    public SettingsController(String titleWindow, String imgUrl, ResolverFactory<R> factory, EvolvingControllerFactory<R> evolvingControllerFactory) {
         this.titleWindow = titleWindow;
         this.resolver = factory.generateResolver();
         this.builder = new SettingsBuilder();
         this.imgUrl = imgUrl;
+        this.evolvingControllerFactory = evolvingControllerFactory;
     }
 
     void openSettings()
@@ -84,8 +88,9 @@ public abstract class SettingsController<R extends Resolver<R>> implements Initi
     }
 
     public void startResolve(){
-        EvolvingController evolvingController = new EvolvingController(resolver);
-        evolvingController.open();
+        builder.updateResolver(this);
+        EvolvingController<R> evolvingController = evolvingControllerFactory.generate();
+        evolvingController.open(resolver);
 //        resolver.start();
     }
 

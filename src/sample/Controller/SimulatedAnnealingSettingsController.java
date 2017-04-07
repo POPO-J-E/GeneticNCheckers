@@ -13,7 +13,7 @@ import sample.setttings.IntegerTextFieldSettingsInput;
  */
 public class SimulatedAnnealingSettingsController extends SettingsController<Recuit> {
     public SimulatedAnnealingSettingsController() {
-        super("Simulated Annealing SettingsInput","/sample/Resources/img_thermometer.png", Recuit::new);
+        super("Simulated Annealing SettingsInput","/sample/Resources/img_thermometer.png", Recuit::new, SimulatedAnnealingEvolvingController::new);
     }
 
     @Override
@@ -38,8 +38,9 @@ public class SimulatedAnnealingSettingsController extends SettingsController<Rec
                 .setResolverValueGetter(Recuit::getSize)
                 .setResolverValueSetter(Recuit::setSize)
             )
-            .add("Number of iterations", "The number of iterations is..........")
-            .add("Alpha", "The alpha constant is..........");
+            //.add("Number of iterations", "The number of iterations is..........")
+            //.add("Alpha", "The alpha constant is..........")
+        ;
     }
 
     private void onAlphaChanged(MouseEvent actionEvent) {

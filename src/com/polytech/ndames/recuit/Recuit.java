@@ -86,10 +86,12 @@ public class Recuit extends Resolver<Recuit> {
                 if(!this.running)
                     return this.bestBoard;
                 else
-                    notifyObservers(this.bestBoard);
+                {
+                    setChanged();
+                    notifyObservers(currentBoard);
+                }
             }
             temperature *= alpha;
-            System.out.println(bestBoard);
         }
 
         return bestBoard;
@@ -140,5 +142,9 @@ public class Recuit extends Resolver<Recuit> {
 
     public void setGamma(float gamma) {
         this.gamma = gamma;
+    }
+
+    public int getBestFitness() {
+        return Math.round(Utils.getFistness(this.bestBoard));
     }
 }
