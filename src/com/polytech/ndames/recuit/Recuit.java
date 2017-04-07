@@ -10,7 +10,7 @@ import java.util.Random;
  *
  * Created by jeremy on 15/03/2017.
  */
-public class Recuit implements Resolver {
+public class Recuit extends Resolver<Recuit> {
 
     private int size = 8;
     private float deltaf;
@@ -48,7 +48,7 @@ public class Recuit implements Resolver {
         this(8, 100, 0.9f);
     }
 
-    public Board start(){
+    public Board startResolve(){
         initialBoard = boardFactory.buildBoard(size);
         bestBoard = initialBoard;
 
@@ -81,6 +81,12 @@ public class Recuit implements Resolver {
                     if (rand.nextFloat() <= Math.exp(-deltaf/temperature))
                         currentBoard = aleaNeighbour;
                 }
+
+                //Stop condition
+                if(!this.running)
+                    return this.bestBoard;
+                else
+                    notifyObservers(this.bestBoard);
             }
             temperature *= alpha;
             System.out.println(bestBoard);

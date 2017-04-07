@@ -73,4 +73,10 @@ public class SettingsBuilder {
         }
     }
 
+    public void updateResolver(SettingsController settingsController){
+        for (SettingsInput input : inputs)
+        {
+            input.updateResolverFromControl(settingsController.getResolver());
+        }
+    }
 }

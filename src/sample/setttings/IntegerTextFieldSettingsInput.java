@@ -10,7 +10,7 @@ import java.util.function.Function;
 /**
  * Created by kifkif on 05/04/2017.
  */
-public class IntegerTextFieldSettingsInput<R extends Resolver> extends SettingsInput<R, NumberTextField, Integer> {
+public class IntegerTextFieldSettingsInput<R extends Resolver<R>> extends SettingsInput<R, NumberTextField, Integer> {
 
     public IntegerTextFieldSettingsInput(String label, String description, Function<R, Integer> resolverValueGetter, BiConsumer<R, Integer> resolverValueSetter) {
         super(label, description, NumberTextField::new, c->Integer.valueOf(c.getText()), (c, v)->c.setText(v.toString()), resolverValueGetter, resolverValueSetter);

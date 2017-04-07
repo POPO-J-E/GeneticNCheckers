@@ -11,7 +11,7 @@ import java.util.function.Function;
 /**
  * Created by kifkif on 05/04/2017.
  */
-public class NumberTextFieldSettingsInput<R extends Resolver> extends SettingsInput<R, NumberTextField, Float> {
+public class NumberTextFieldSettingsInput<R extends Resolver<R>> extends SettingsInput<R, NumberTextField, Float> {
 
     public NumberTextFieldSettingsInput(String label, String description, Function<R, Float> resolverValueGetter, BiConsumer<R, Float> resolverValueSetter) {
         super(label, description, NumberTextField::new, c->Float.valueOf(c.getText()), (c, v)->c.setText(v.toString()), resolverValueGetter, resolverValueSetter);

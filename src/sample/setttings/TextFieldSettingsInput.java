@@ -11,7 +11,7 @@ import java.util.function.Function;
 /**
  * Created by kifkif on 05/04/2017.
  */
-public class TextFieldSettingsInput<R extends Resolver> extends SettingsInput<R, TextField, String> {
+public class TextFieldSettingsInput<R extends Resolver<R>> extends SettingsInput<R, TextField, String> {
 
     public TextFieldSettingsInput(String label, String description,  Function<R, String> resolverValueGetter, BiConsumer<R, String> resolverValueSetter) {
         super(label, description, TextField::new, TextInputControl::getText, TextInputControl::setText, resolverValueGetter, resolverValueSetter);

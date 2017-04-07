@@ -11,7 +11,7 @@ import java.util.function.Function;
 /**
  * Created by kifkif on 05/04/2017.
  */
-public class SettingsInput<R extends Resolver, C extends Control, V>
+public class SettingsInput<R extends Resolver<R>, C extends Control, V>
 {
     private String label;
     private String description;

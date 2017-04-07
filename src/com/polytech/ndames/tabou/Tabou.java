@@ -11,7 +11,7 @@ import java.util.Random;
  *
  * Created by jeremy on 15/03/2017.
  */
-public class Tabou implements Resolver {
+public class Tabou extends Resolver<Tabou> {
 
     private final int tabouSize;
     private int size = 8;
@@ -42,7 +42,7 @@ public class Tabou implements Resolver {
         this.moveFactory = moveFactory;
     }
 
-    public Board start(){
+    public Board startResolve(){
         moves = moveFactory.buildAllMoves(size);
         System.out.println("Nbr moves : "+moves.size());
         fifo = new LimitedQueue<>(tabouSize);
@@ -74,6 +74,10 @@ public class Tabou implements Resolver {
                     localBestBoard = board;
                     localMove = move;
                 }
+
+                //Stop condition
+                if(!this.running)
+                    return this.bestBoard;
             }
             System.out.println("Iteration duration :" + ((System.currentTimeMillis() - start)/1000.0) + "s");
 

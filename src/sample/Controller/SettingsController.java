@@ -24,7 +24,7 @@ import java.util.ResourceBundle;
  *
  * Created by jeremy on 21/03/2017.
  */
-public abstract class SettingsController<R extends Resolver> implements Initializable{
+public abstract class SettingsController<R extends Resolver<R>> implements Initializable{
     @FXML
     public ImageView img_algorithm;
     @FXML
@@ -84,8 +84,8 @@ public abstract class SettingsController<R extends Resolver> implements Initiali
     }
 
     public void startResolve(){
-        EvolvingController evolvingController = new EvolvingController();
-        evolvingController.openSettings();
+        EvolvingController evolvingController = new EvolvingController(resolver);
+        evolvingController.open();
 //        resolver.start();
     }
 

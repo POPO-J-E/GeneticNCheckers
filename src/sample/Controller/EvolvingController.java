@@ -1,5 +1,7 @@
 package sample.Controller;
 
+import com.polytech.ndames.dames.Board;
+import com.polytech.ndames.dames.Utils;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -10,18 +12,28 @@ import javafx.scene.chart.Chart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.stage.Stage;
+import sample.Utils.Resolver;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.ResourceBundle;
 
 /**
  *
  * Created by jeremy on 28/03/2017.
  */
-public class EvolvingController implements Initializable {
+public class EvolvingController<R extends Resolver<R>> implements Initializable, Observer {
     @FXML
     private AreaChart<Number,Number> chart_evolution;
+
+    private R resolver;
+
+    public EvolvingController(R resolver) {
+        this.resolver = resolver;
+        resolver.addObserver(this);
+    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -63,7 +75,7 @@ public class EvolvingController implements Initializable {
 
     }
 
-    void openSettings()
+    void open()
     {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../View/evolving.fxml"));
@@ -75,5 +87,28 @@ public class EvolvingController implements Initializable {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        startResolve();
+    }
+
+    private void startResolve() {
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                resolver.start();
+            }
+        });
+        t.setDaemon(true);
+        t.start();
+    }
+
+    @Override
+    public void update(Observable observable, Object o) {
+        if(o instanceof Board)
+            this.updateInfos((Board)o);
+    }
+
+    private void updateInfos(Board board) {
+        System.out.println("sout "+Utils.getFistness(board));
     }
 }
