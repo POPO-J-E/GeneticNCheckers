@@ -76,7 +76,13 @@ public class SettingsBuilder {
     public void updateResolver(SettingsController settingsController){
         for (SettingsInput input : inputs)
         {
-            input.updateResolverFromControl(settingsController.getResolver());
+            try {
+                input.updateResolverFromControl(settingsController.getResolver());
+            }
+            catch (NullPointerException e)
+            {
+                e.printStackTrace();
+            }
         }
     }
 }

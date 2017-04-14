@@ -11,7 +11,7 @@ import sample.Utils.SettingsBuilder;
  */
 public class TabooSettingsController extends SettingsController<Tabou> {
     public TabooSettingsController() {
-        super("Taboo SettingsInput","/sample/Resources/img_list.png", Tabou::new);
+        super("Taboo SettingsInput","/sample/Resources/img_list.png", Tabou::new, TabooEvolvingController::new);
     }
 
     @Override
