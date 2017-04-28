@@ -1,9 +1,12 @@
 package sample.Controller;
 
+import com.polytech.ndames.recuit.Recuit;
 import com.polytech.ndames.tabou.Tabou;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import sample.Utils.SettingsBuilder;
+import sample.setttings.IntegerTextFieldSettingsInput;
+import sample.setttings.NumberTextFieldSettingsInput;
 
 /**
  *
@@ -16,33 +19,18 @@ public class TabooSettingsController extends SettingsController<Tabou> {
 
     @Override
     public void buildSettings(SettingsBuilder builder) {
-        TextField tf_size = new TextField();
-        tf_size.setOnMouseClicked(this::onSizeChanged);
-        tf_size.setOnMouseClicked(e-> setTitleAndDescription("Board Size","The board size is..........."));
-
-        TextField tf_tabooListSize = new TextField();
-        tf_tabooListSize.setOnMouseClicked(this::onTabooListSizeChanged);
-        tf_tabooListSize.setOnMouseClicked(e-> setTitleAndDescription("Taboo list size","The Taboo list size is.........."));
-
-        TextField tf_alpha = new TextField();
-        tf_alpha.setOnMouseClicked(this::onAlphaChanged);
-        tf_alpha.setOnMouseClicked(e-> setTitleAndDescription("Alpha","The alpha constant is.........."));
-
-//        builder.add("Board size", tf_size)
-//                .add("Taboo list size", tf_tabooListSize)
-//                .add("Alpha", tf_alpha);
+        builder.add(new IntegerTextFieldSettingsInput<Tabou>("Board size", "The board size is...........")
+                .setResolverValueGetter(Tabou::getSize)
+                .setResolverValueSetter(Tabou::setSize)
+            )
+            .add(new IntegerTextFieldSettingsInput<Tabou>("Number Of Iterations", "The board size is...........")
+                    .setResolverValueGetter(Tabou::getNbIteration)
+                    .setResolverValueSetter(Tabou::setNbIteration)
+            )
+            .add(new IntegerTextFieldSettingsInput<Tabou>("Taboo List Size", "The board size is...........")
+                    .setResolverValueGetter(Tabou::getTabouSize)
+                    .setResolverValueSetter(Tabou::setTabouSize)
+            )
+        ;
     }
-
-    private void onTabooListSizeChanged(MouseEvent mouseEvent) {
-        System.out.println("taboo size");
-    }
-
-    private void onAlphaChanged(MouseEvent actionEvent) {
-        System.out.println("alpha");
-    }
-
-    private void onSizeChanged(MouseEvent actionEvent){
-        System.out.println("Size");
-    }
-
 }

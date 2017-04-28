@@ -13,7 +13,7 @@ import java.util.Random;
  */
 public class Tabou extends Resolver<Tabou> {
 
-    private final int tabouSize;
+    private int tabouSize;
     private int size = 8;
     
     private Board initialBoard;
@@ -186,5 +186,9 @@ public class Tabou extends Resolver<Tabou> {
 
     public void setMoves(List<Move> moves) {
         this.moves = moves;
+    }
+
+    public void setTabouSize(int size) {
+        tabouSize = size;
     }
 }

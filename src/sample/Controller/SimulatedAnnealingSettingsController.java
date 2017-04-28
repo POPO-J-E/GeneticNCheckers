@@ -24,14 +24,14 @@ public class SimulatedAnnealingSettingsController extends SettingsController<Rec
                 .setResolverValueGetter(Recuit::getSize)
                 .setResolverValueSetter(Recuit::setSize)
             )
-                .add(new IntegerTextFieldSettingsInput<Recuit>("Number Of Iterations", "The board size is...........")
+            .add(new IntegerTextFieldSettingsInput<Recuit>("Number Of Iterations", "The board size is...........")
                 .setResolverValueGetter(Recuit::getNbIteration)
                 .setResolverValueSetter(Recuit::setNbIteration)
             )
-                .add(new NumberTextFieldSettingsInput<Recuit>("Alpha", "The board size is...........")
-                        .setResolverValueGetter(Recuit::getAlpha)
-                        .setResolverValueSetter(Recuit::setAlpha)
-                )
+            .add(new NumberTextFieldSettingsInput<Recuit>("Alpha", "The board size is...........")
+                    .setResolverValueGetter(Recuit::getAlpha)
+                    .setResolverValueSetter(Recuit::setAlpha)
+            )
         ;
     }
 }
