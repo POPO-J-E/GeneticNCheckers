@@ -110,10 +110,12 @@ public class Utils {
             {
                 Dame dame_bis = board.getDames().get(row_bis);
 
-                if(dame.getColumn() == dame_bis.getColumn())
+                if((dame.getColumn() == dame_bis.getColumn()) || (row_bis - row == Math.abs(dame.getColumn() - dame_bis.getColumn())))
+                {
                     conflicts++;
-                if(row_bis - row == Math.abs(dame.getColumn() - dame_bis.getColumn()))
-                    conflicts++;
+                    dame.setConflict(true);
+                    dame_bis.setConflict(true);
+                }
             }
         }
 

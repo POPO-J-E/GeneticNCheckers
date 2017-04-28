@@ -10,6 +10,7 @@ public class Dame implements Factory<Dame>{
 
     private int row;
     private int column;
+    private boolean conflict;
 
     public Dame() {
     }
@@ -17,6 +18,7 @@ public class Dame implements Factory<Dame>{
     public Dame(int row, int column) {
         this.row = row;
         this.column = column;
+        conflict = false;
     }
 
     public int getRow() {
@@ -46,5 +48,13 @@ public class Dame implements Factory<Dame>{
                 "" + row +
                 " - " + column +
                 '}';
+    }
+
+    public boolean isConflict() {
+        return conflict;
+    }
+
+    public void setConflict(boolean conflict) {
+        this.conflict = conflict;
     }
 }

@@ -42,7 +42,12 @@ public class GeneticResolver extends Resolver<GeneticResolver> {
 
     @Override
     public float getBestFitness() {
-        return harvester.getBestPhenotype().getFitness();
+        return Utils.getFistness(Utils.phenotypeToBoard(harvester.getBestPhenotype()));
+    }
+
+    @Override
+    public Board getBestBoard() {
+        return Utils.phenotypeToBoard(harvester.getBestPhenotype());
     }
 
     public int getNbGen() {

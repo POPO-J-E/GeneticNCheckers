@@ -22,6 +22,7 @@ import javafx.scene.chart.AreaChart;
 import javafx.scene.chart.Chart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
+import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
@@ -50,6 +51,11 @@ public abstract class EvolvingController<R extends Resolver<R>> implements Initi
 
     @FXML
     private VBox vb_inputs;
+
+    @FXML
+    private javafx.scene.control.Button btn_bestBoard;
+    @FXML
+    private javafx.scene.control.Button btn_stop;
 
     private XYChart.Series<Number, Number> seriesFitness;
 
@@ -93,6 +99,24 @@ public abstract class EvolvingController<R extends Resolver<R>> implements Initi
 
         buildSettings(builder);
         vb_inputs.getChildren().add(builder.build(this));
+
+        btn_stop.setOnAction(e->resolver.stop());
+        btn_bestBoard.setOnAction(e->showBestBoard());
+    }
+
+    private void showBestBoard() {
+        Board bestBoard = resolver.getBestBoard();
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../View/board.fxml"));
+            fxmlLoader.setController(new BoardController(bestBoard));
+            Parent root1 = (Parent) fxmlLoader.load();
+            Stage stage = new Stage();
+            stage.setTitle("Preview Best Board");
+            stage.setScene(new Scene(root1));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public abstract void buildSettings(EvolvingInputBuilder<R> builder);

@@ -57,4 +57,6 @@ public abstract class Resolver<R extends Resolver> extends Observable{
     }
 
     public abstract float getBestFitness();
+
+    public abstract Board getBestBoard();
 }

@@ -163,6 +163,11 @@ public class Recuit extends Resolver<Recuit> {
         return Utils.getFistness(this.bestBoard);
     }
 
+    @Override
+    public Board getBestBoard() {
+        return bestBoard;
+    }
+
     public float getTemperature() {
         return temperature;
     }

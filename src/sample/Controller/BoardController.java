@@ -80,15 +80,15 @@ public class BoardController implements Initializable {
     private void showQueens(){
         for (int i = 0; i < board.getSize() ; i++) {
             ImageView imageView = new ImageView();
-//            if (!board.getDames().get(i).isInConflict())
-//            {
-//                Image image = new Image("/sample/Resources/crown.png");
-//                imageView.setImage(image);
-//            }
-//            else {
+            if (!board.getDames().get(i).isConflict())
+            {
+                Image image = new Image("/sample/Resources/crown.png");
+                imageView.setImage(image);
+            }
+            else {
                 Image image = new Image("/sample/Resources/crown_conflict.png");
                 imageView.setImage(image);
-//            }
+            }
             int col = board.getDames().get(i).getColumn();
             gridpane.add(imageView,col,i);
         }
