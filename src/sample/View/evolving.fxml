@@ -7,6 +7,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
@@ -40,14 +41,15 @@
                            </VBox.margin></Label>
                         <!--<AnchorPane fx:id="anchor_inputs" prefHeight="200.0" prefWidth="200.0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0"/>-->
                      </children></VBox>
-                  <VBox alignment="CENTER_LEFT" layoutX="-9.0" layoutY="291.0" prefHeight="44.0" prefWidth="626.0" style="-fx-border-color: gray; -fx-border-width: 1 0 0 0;">
+                  <HBox alignment="CENTER_LEFT" layoutX="-9.0" layoutY="284.0" prefHeight="52.0" prefWidth="623.0">
                      <children>
-                        <Button mnemonicParsing="false" text="■ Stop">
-                           <VBox.margin>
-                              <Insets left="20.0" />
-                           </VBox.margin></Button>
+                        <Button fx:id="btn_stop" mnemonicParsing="false" text="■ Stop">
+                           <HBox.margin>
+                              <Insets left="20.0" right="20.0" />
+                           </HBox.margin></Button>
+                        <Button fx:id="btn_bestBoard" mnemonicParsing="false" text="Preview of the best board" />
                      </children>
-                  </VBox>
+                  </HBox>
                </children>
             </AnchorPane>
         </items>
