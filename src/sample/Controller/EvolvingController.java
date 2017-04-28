@@ -15,22 +15,24 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.chart.AreaChart;
 import javafx.scene.chart.Chart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.GridPane;
+import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import sample.Utils.EvolvingInputBuilder;
 import sample.Utils.Resolver;
 
+import java.awt.*;
 import java.io.IOException;
 import java.net.URL;
 import java.util.*;
+import java.util.List;
 
 /**
  *
@@ -47,7 +49,7 @@ public abstract class EvolvingController<R extends Resolver<R>> implements Initi
     private int yvalue = 0;
 
     @FXML
-    private AnchorPane anchor_inputs;
+    private VBox vb_inputs;
 
     private XYChart.Series<Number, Number> seriesFitness;
 
@@ -84,7 +86,7 @@ public abstract class EvolvingController<R extends Resolver<R>> implements Initi
         chart_evolution.getData().add(seriesFitness);
 
         buildSettings(builder);
-        anchor_inputs.getChildren().add(builder.build(this));
+        vb_inputs.getChildren().add(builder.build(this));
     }
 
     public abstract void buildSettings(EvolvingInputBuilder<R> builder);

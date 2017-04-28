@@ -1,9 +1,11 @@
 package sample.Utils;
 
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.RowConstraints;
 import sample.Controller.EvolvingController;
 import sample.Controller.SettingsController;
@@ -40,14 +42,19 @@ public class EvolvingInputBuilder<R extends Resolver<R>> {
     }
 
     public GridPane build(EvolvingController evolvingController){
-        ColumnConstraints column1 = new ColumnConstraints();
-        column1.setPercentWidth(23);
         GridPane gridPane = new GridPane();
-        gridPane.setPadding(new Insets(8));
-        gridPane.getColumnConstraints().add(column1);
+        gridPane.setAlignment(Pos.CENTER);
+        gridPane.setPadding(new Insets(20));
+
         int row = 0;
         int col = 0;
+
         for(EvolvingInput input : inputs) {
+            ColumnConstraints column1 = new ColumnConstraints();
+            column1.percentWidthProperty().set(20);
+            column1.setHgrow(Priority.ALWAYS);
+            gridPane.getColumnConstraints().add(row,column1);
+
             buildInput(evolvingController, gridPane, input, row, col);
             col += 2;
             if(col > 2)
@@ -61,7 +68,9 @@ public class EvolvingInputBuilder<R extends Resolver<R>> {
 
     private void buildInput(EvolvingController evolvingController, GridPane grid, EvolvingInput input, int row, int col)
     {
-        grid.add(new Label(input.getLabel()),col,row);
+        Label label = new Label(input.getLabel());
+        label.setPadding(new Insets(0,0,0,20));
+        grid.add(label,col,row);
         grid.add(input.getControl(),col+1,row);
 
         RowConstraints rowConstraint = new RowConstraints();
