@@ -2,6 +2,7 @@ package sample.Utils;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
@@ -21,10 +22,10 @@ import java.util.Map;
 import java.util.function.Function;
 
 /**
+ *
  * Created by kifkif on 07/04/2017.
  */
 public class EvolvingInputBuilder<R extends Resolver<R>> {
-
     private List<EvolvingInput<R, ?, ?>> inputs;
 
     public EvolvingInputBuilder() {
