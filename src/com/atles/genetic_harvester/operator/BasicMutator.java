@@ -36,6 +36,15 @@ public class BasicMutator<G extends Gene<?, G>> implements Mutator<G> {
     }
 
     @Override
+    public float getMutationRate() {
+        return mutatorRatio;
+    }
+
+    public void setMutationRate(float mutatorRatio) {
+        this.mutatorRatio = mutatorRatio;
+    }
+
+    @Override
     public void update(Population<G> population) {
     }
 }

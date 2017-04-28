@@ -61,9 +61,15 @@ public abstract class EvolvingController<R extends Resolver<R>> implements Initi
     private int coordSize;
     private int coordI;
     private Coordinate[] coordinates;
+    private double distanceTol;
 
     public EvolvingController() {
+        this(1);
+    }
+
+    public EvolvingController(double distanceTol) {
         this.builder = new EvolvingInputBuilder<>();
+        this.distanceTol = distanceTol;
     }
 
     @Override
@@ -144,12 +150,14 @@ public abstract class EvolvingController<R extends Resolver<R>> implements Initi
     private synchronized void endResolve() {
         long t0 = System.nanoTime();
         GeometryFactory gf = new GeometryFactory();
+        if(coordI == 1)
+            return;
         Coordinate[] coordinates = new Coordinate[coordI];
         for (int i = 0; i < coordI; i++) {
             coordinates[i] = this.coordinates[i];
         }
         Geometry geom = new LineString(new CoordinateArraySequence(coordinates), gf);
-        Geometry simplified = DouglasPeuckerSimplifier.simplify(geom, 1);
+        Geometry simplified = DouglasPeuckerSimplifier.simplify(geom, distanceTol);
         List<XYChart.Data<Number, Number>> update = new ArrayList<>();
         for (Coordinate each : simplified.getCoordinates()) {
             update.add(new XYChart.Data<>(each.x, each.y));

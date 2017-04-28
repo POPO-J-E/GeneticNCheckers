@@ -44,7 +44,6 @@ public class Tabou extends Resolver<Tabou> {
 
     public Board startResolve(){
         moves = moveFactory.buildAllMoves(size);
-        System.out.println("Nbr moves : "+moves.size());
         fifo = new LimitedQueue<>(tabouSize);
 
         initialBoard = boardFactory.buildBoard(size);
@@ -62,7 +61,6 @@ public class Tabou extends Resolver<Tabou> {
             Move localMove = null;
             float localBestFitness = Float.MAX_VALUE;
 
-            Long start = System.currentTimeMillis();
             for (Map.Entry<Move, Board> entry : neighbours.entrySet()) {
                 Move move = entry.getKey();
                 Board board = entry.getValue();
@@ -77,9 +75,16 @@ public class Tabou extends Resolver<Tabou> {
 
                 //Stop condition
                 if(!this.running)
+                {
+                    this.endResolve();
                     return this.bestBoard;
+                }
+                else
+                {
+                    setChanged();
+                    notifyObservers(currentBoard);
+                }
             }
-            System.out.println("Iteration duration :" + ((System.currentTimeMillis() - start)/1000.0) + "s");
 
             if(localBestFitness >= currentFitness){
                 forbidMove(localMove);
@@ -93,13 +98,16 @@ public class Tabou extends Resolver<Tabou> {
             currentFitness = localBestFitness;
             currentBoard = localBestBoard;
 
-            System.out.println("best neighbour : " + currentBoard);
+            setChanged();
+            notifyObservers(currentFitness);
 
             i++;
         }
         while (i < nbIteration && bestFitness > 0);
 
-        System.out.println("best board : "+bestBoard);
+        setChanged();
+        notifyObservers(bestBoard);
+        this.endResolve();
         return bestBoard;
     }
 
