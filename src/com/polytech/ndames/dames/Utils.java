@@ -1,5 +1,9 @@
 package com.polytech.ndames.dames;
 
+import com.atles.genetic_harvester.NumericGene;
+import com.atles.genetic_harvester.Phenotype;
+import com.polytech.ndames.genetic.DameFactory;
+
 import java.util.*;
 
 /**
@@ -130,5 +134,14 @@ public class Utils {
         finally {
             System.out.println("No opposite move.");
         }
+    }
+
+    public static Board phenotypeToBoard(Phenotype<NumericGene> phenotype) {
+        Board board = new Board(phenotype.getChromosome(0).getGenes().size());
+        for (int i = 0; i < board.getSize(); i++) {
+            Dame d = new Dame(i,phenotype.getGene(0, i).getAllele());
+            board.getDames().add(d);
+        }
+        return board;
     }
 }

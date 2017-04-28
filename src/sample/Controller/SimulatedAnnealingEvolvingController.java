@@ -13,8 +13,8 @@ public class SimulatedAnnealingEvolvingController extends EvolvingController<Rec
 
     @Override
     public void buildSettings(EvolvingInputBuilder<Recuit> builder) {
-        builder.add("Size", Recuit::getSize);
-        builder.add("Best fitness", Recuit::getBestFitness);
+        builder.add("Board Size", Recuit::getSize);
+        builder.add(new NumberLabelSettingsInput<>("Best Fitness", Recuit::getBestFitness));
         builder.add(new NumberLabelSettingsInput<>("Temperature", Recuit::getTemperature));
         builder.add(new NumberLabelSettingsInput<>("DeltaF", Recuit::getDeltaf));
     }

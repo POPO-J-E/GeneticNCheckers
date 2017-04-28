@@ -55,4 +55,6 @@ public abstract class Resolver<R extends Resolver> extends Observable{
         this.setChanged();
         this.notifyObservers("end");
     }
+
+    public abstract float getBestFitness();
 }

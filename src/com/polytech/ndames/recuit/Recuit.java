@@ -157,10 +157,10 @@ public class Recuit extends Resolver<Recuit> {
         this.gamma = gamma;
     }
 
-    public int getBestFitness() {
+    public float getBestFitness() {
         if(this.bestBoard == null)
             return 0;
-        return Math.round(Utils.getFistness(this.bestBoard));
+        return Utils.getFistness(this.bestBoard);
     }
 
     public float getTemperature() {

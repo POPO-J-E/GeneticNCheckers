@@ -34,4 +34,12 @@ public class DameFactory implements Factory<Phenotype<NumericGene>> {
     {
         return new NumericGene(0, size);
     }
+
+    public int getSize() {
+        return size;
+    }
+
+    public void setSize(int size) {
+        this.size = size;
+    }
 }

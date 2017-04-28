@@ -5,5 +5,9 @@ import com.atles.genetic_harvester.Phenotype;
 
 public interface Mutator<G extends Gene<?, G>> extends Operator<G>{
 
-    public void mutate(Phenotype<G> phenotype);
+    void mutate(Phenotype<G> phenotype);
+
+    float getMutationRate();
+
+    void setMutationRate(float mutatorRatio);
 }

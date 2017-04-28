@@ -8,6 +8,7 @@ import com.atles.genetic_harvester.operator.Selector;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
+import java.util.function.Consumer;
 
 
 public abstract class Harvester<G extends Gene<?, G>> {
@@ -23,6 +24,9 @@ public abstract class Harvester<G extends Gene<?, G>> {
     private Factory<Phenotype<G>> phenotypeFactory;
 
     private boolean firstGen = true;
+    private Consumer<Phenotype<G>> onNotify;
+    private Consumer<Phenotype<G>> onEnd;
+    private boolean running;
 
     public Harvester(Factory<Phenotype<G>> phenotypeFactory, int size) {
         this.size = size;
@@ -79,6 +83,7 @@ public abstract class Harvester<G extends Gene<?, G>> {
         evaluator.evaluate(population);
         population.calculTotalFitness();
         updateOperators();
+        update(this.population.getBestPhenotype());
         if(this.bestPhenotype == null || this.bestPhenotype.getFitness() < this.population.getBestPhenotype().getFitness())
             this.bestPhenotype = this.population.getBestPhenotype();
 
@@ -134,9 +139,18 @@ public abstract class Harvester<G extends Gene<?, G>> {
     }
 
     public void goToXGeneration(int x) {
-        while (this.population.getGeneration() < x && !this.solutionFinded()) {
+        running = true;
+        while (this.population.getGeneration() < x && !this.solutionFinded() && running) {
             goToNextGeneration();
         }
+        this.onEnd.accept(this.bestPhenotype);
+    }
+
+    public void reset()
+    {
+        firstGen = true;
+        generateFirstGeneration();
+        bestPhenotype = null;
     }
 
     public void updateOperators() {
@@ -183,5 +197,23 @@ public abstract class Harvester<G extends Gene<?, G>> {
 
     public void setPhenotypeFactory(Factory<Phenotype<G>> phenotypeFactory) {
         this.phenotypeFactory = phenotypeFactory;
+    }
+
+    public void update(Phenotype<G> phenotype)
+    {
+        this.onNotify.accept(phenotype);
+    }
+
+    public void setOnNotify(Consumer<Phenotype<G>> consumer)
+    {
+        this.onNotify = consumer;
+    }
+
+    public void stop() {
+        running = false;
+    }
+
+    public void setOnEnd(Consumer<Phenotype<G>> onEnd) {
+        this.onEnd = onEnd;
     }
 }
