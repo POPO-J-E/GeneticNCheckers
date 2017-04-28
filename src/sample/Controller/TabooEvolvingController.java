@@ -13,9 +13,4 @@ public class TabooEvolvingController extends EvolvingController<Tabou> {
     public void buildSettings(EvolvingInputBuilder<Tabou> builder) {
 
     }
-
-    @Override
-    protected void updateInfos(Board board) {
-
-    }
 }

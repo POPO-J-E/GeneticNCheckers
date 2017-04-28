@@ -63,7 +63,7 @@ public class Recuit extends Resolver<Recuit> {
             for (int k = 1; k < nbIteration; k++) {
                 Board aleaNeighbour = Utils.getRandomNeighbour(currentBoard);
 //                Board aleaNeighbour = Utils.getAleaNeighbour(currentBoard);
-                System.out.println("alea=" +aleaNeighbour);
+                //System.out.println("alea=" +aleaNeighbour);
 
                 deltaf = Utils.getFistness(aleaNeighbour) - Utils.getFistness(currentBoard);
                 if (deltaf<=0)
@@ -74,7 +74,12 @@ public class Recuit extends Resolver<Recuit> {
                         bestBoard = aleaNeighbour;
                         System.out.println(Utils.getFistness(bestBoard));
                         if (Utils.getFistness(bestBoard) == 0)
+                        {
+                            setChanged();
+                            notifyObservers(bestBoard);
+                            this.endResolve();
                             return bestBoard;
+                        }
                     }
                 }
                 else {
@@ -84,7 +89,10 @@ public class Recuit extends Resolver<Recuit> {
 
                 //Stop condition
                 if(!this.running)
+                {
+                    this.endResolve();
                     return this.bestBoard;
+                }
                 else
                 {
                     setChanged();
@@ -93,6 +101,11 @@ public class Recuit extends Resolver<Recuit> {
             }
             temperature *= alpha;
         }
+
+        setChanged();
+        notifyObservers(bestBoard);
+
+        this.endResolve();
 
         return bestBoard;
     }
@@ -145,6 +158,24 @@ public class Recuit extends Resolver<Recuit> {
     }
 
     public int getBestFitness() {
+        if(this.bestBoard == null)
+            return 0;
         return Math.round(Utils.getFistness(this.bestBoard));
+    }
+
+    public float getTemperature() {
+        return temperature;
+    }
+
+    public void setTemperature(float temperature) {
+        this.temperature = temperature;
+    }
+
+    public float getDeltaf() {
+        return deltaf;
+    }
+
+    public void setDeltaf(float deltaf) {
+        this.deltaf = deltaf;
     }
 }

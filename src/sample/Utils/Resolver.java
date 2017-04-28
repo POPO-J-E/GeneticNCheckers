@@ -36,7 +36,8 @@ public abstract class Resolver<R extends Resolver> extends Observable{
 
     private void onStop()
     {
-        onStopAction.accept((R) this);
+        if(onStopAction != null)
+            onStopAction.accept((R) this);
     }
 
     public void setOnStop(Consumer<R> action)
@@ -47,5 +48,11 @@ public abstract class Resolver<R extends Resolver> extends Observable{
     public boolean isRunning()
     {
         return this.running;
+    }
+
+    public void endResolve()
+    {
+        this.setChanged();
+        this.notifyObservers("end");
     }
 }

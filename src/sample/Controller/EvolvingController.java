@@ -2,6 +2,16 @@ package sample.Controller;
 
 import com.polytech.ndames.dames.Board;
 import com.polytech.ndames.dames.Utils;
+import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.LineString;
+import com.vividsolutions.jts.geom.impl.CoordinateArraySequence;
+import com.vividsolutions.jts.simplify.DouglasPeuckerSimplifier;
+import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -14,70 +24,64 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import sample.Utils.EvolvingInputBuilder;
 import sample.Utils.Resolver;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.Observable;
-import java.util.Observer;
-import java.util.ResourceBundle;
+import java.util.*;
 
 /**
  *
  * Created by jeremy on 28/03/2017.
  */
 public abstract class EvolvingController<R extends Resolver<R>> implements Initializable, Observer {
-    @FXML
-    private AreaChart<Number,Number> chart_evolution;
 
     @FXML
-    public AnchorPane anchor_inputs;
+    private AreaChart<Number,Number> chart_evolution;
+    @FXML
+    private NumberAxis xAxis ;
+    @FXML
+    private NumberAxis yAxis ;
+    private int yvalue = 0;
+
+    @FXML
+    private AnchorPane anchor_inputs;
+
+    private XYChart.Series<Number, Number> seriesFitness;
+
 
     private R resolver;
     private EvolvingInputBuilder<R> builder;
 
+    private final int COORD_SIZE = 500;
+    private int coordSize;
+    private int coordI;
+    private Coordinate[] coordinates;
+
     public EvolvingController() {
-        this.builder = new EvolvingInputBuilder<R>();
+        this.builder = new EvolvingInputBuilder<>();
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        System.out.println("azertyuiop");
-        final NumberAxis xAxis = new NumberAxis(1, 31, 1);
-        final NumberAxis yAxis = new NumberAxis();
-        chart_evolution = new AreaChart<Number,Number>(xAxis,yAxis);
-        chart_evolution.setTitle("Temperature Monitoring (in Degrees C)");
+        chart_evolution.setTitle("Fitness evolution");
 
-        XYChart.Series seriesApril= new XYChart.Series();
-        seriesApril.setName("April");
-        seriesApril.getData().add(new XYChart.Data(1, 4));
-        seriesApril.getData().add(new XYChart.Data(3, 10));
-        seriesApril.getData().add(new XYChart.Data(6, 15));
-        seriesApril.getData().add(new XYChart.Data(9, 8));
-        seriesApril.getData().add(new XYChart.Data(12, 5));
-        seriesApril.getData().add(new XYChart.Data(15, 18));
-        seriesApril.getData().add(new XYChart.Data(18, 15));
-        seriesApril.getData().add(new XYChart.Data(21, 13));
-        seriesApril.getData().add(new XYChart.Data(24, 19));
-        seriesApril.getData().add(new XYChart.Data(27, 21));
-        seriesApril.getData().add(new XYChart.Data(30, 21));
+        xAxis.setAutoRanging(true);
+        xAxis.setLowerBound(0);
+        xAxis.setUpperBound(24);
+        xAxis.setTickUnit(3);
 
-        XYChart.Series seriesMay = new XYChart.Series();
-        seriesMay.setName("May");
-        seriesMay.getData().add(new XYChart.Data(1, 20));
-        seriesMay.getData().add(new XYChart.Data(3, 15));
-        seriesMay.getData().add(new XYChart.Data(6, 13));
-        seriesMay.getData().add(new XYChart.Data(9, 12));
-        seriesMay.getData().add(new XYChart.Data(12, 14));
-        seriesMay.getData().add(new XYChart.Data(15, 18));
-        seriesMay.getData().add(new XYChart.Data(18, 25));
-        seriesMay.getData().add(new XYChart.Data(21, 25));
-        seriesMay.getData().add(new XYChart.Data(24, 23));
-        seriesMay.getData().add(new XYChart.Data(27, 26));
-        seriesMay.getData().add(new XYChart.Data(31, 26));
+        yAxis.setAutoRanging(true);
+        yAxis.setLowerBound(0);
+        yAxis.setUpperBound(100);
+        yAxis.setTickUnit(10);
 
-        chart_evolution.getData().addAll(seriesApril, seriesMay);
+        seriesFitness= new XYChart.Series<>();
+        seriesFitness.setName("Fitness");
+
+        chart_evolution.getData().add(seriesFitness);
 
         buildSettings(builder);
         anchor_inputs.getChildren().add(builder.build(this));
@@ -97,6 +101,7 @@ public abstract class EvolvingController<R extends Resolver<R>> implements Initi
             Parent root1 = (Parent) fxmlLoader.load();
             Stage stage = new Stage();
             stage.setScene(new Scene(root1));
+            stage.setOnCloseRequest(this::exitApplication);
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
@@ -106,12 +111,8 @@ public abstract class EvolvingController<R extends Resolver<R>> implements Initi
     }
 
     private void startResolve() {
-        Thread t = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                resolver.start();
-            }
-        });
+        this.initCoord(COORD_SIZE);
+        Thread t = new Thread(() -> resolver.start());
         t.setDaemon(true);
         t.start();
     }
@@ -120,15 +121,83 @@ public abstract class EvolvingController<R extends Resolver<R>> implements Initi
     public synchronized void update(Observable observable, Object o) {
         if(o instanceof Board)
         {
-            this.updateInfos((Board)o);
+            Platform.runLater(() -> {
+                Board board = (Board)o;
+                addFitness(board);
+                //updateInfos(board);
+            });
+        }
+        else if(o instanceof String)
+        {
+            String action = (String)o;
+            if(action.equals("end"))
+            {
+                Platform.runLater(this::endResolve);
+            }
         }
 
         this.builder.updateInputs(resolver);
     }
 
-    protected abstract void updateInfos(Board board);
+    private synchronized void endResolve() {
+        long t0 = System.nanoTime();
+        GeometryFactory gf = new GeometryFactory();
+        Coordinate[] coordinates = new Coordinate[coordI];
+        for (int i = 0; i < coordI; i++) {
+            coordinates[i] = this.coordinates[i];
+        }
+        Geometry geom = new LineString(new CoordinateArraySequence(coordinates), gf);
+        Geometry simplified = DouglasPeuckerSimplifier.simplify(geom, 1);
+        List<XYChart.Data<Number, Number>> update = new ArrayList<>();
+        for (Coordinate each : simplified.getCoordinates()) {
+            update.add(new XYChart.Data<>(each.x, each.y));
+        }
+        long t1 = System.nanoTime();
+        System.out.println(String.format("Reduces points from %d to %d in %.1f ms", coordinates.length, update.size(), (t1 - t0) / 1e6));
+        ObservableList<XYChart.Data<Number, Number>> list = FXCollections.observableArrayList(update);
+        this.seriesFitness.getData().addAll(list);
+
+        this.initCoord(COORD_SIZE);
+    }
+
+    //protected abstract void updateInfos(Board board);
 
     public R getResolver() {
         return resolver;
+    }
+
+    protected synchronized void addFitness(Board board)
+    {
+        coordinates[coordI++] = new Coordinate(yvalue++, Utils.getFistness(board));
+
+        if(coordI >= coordSize)
+        {
+            long t0 = System.nanoTime();
+            GeometryFactory gf = new GeometryFactory();
+            Geometry geom = new LineString(new CoordinateArraySequence(coordinates), gf);
+            Geometry simplified = DouglasPeuckerSimplifier.simplify(geom, 1);
+            List<XYChart.Data<Number, Number>> update = new ArrayList<>();
+            for (Coordinate each : simplified.getCoordinates()) {
+                update.add(new XYChart.Data<>(each.x, each.y));
+            }
+            long t1 = System.nanoTime();
+            System.out.println(String.format("Reduces points from %d to %d in %.1f ms", coordinates.length, update.size(),
+                    (t1 - t0) / 1e6));
+            ObservableList<XYChart.Data<Number, Number>> list = FXCollections.observableArrayList(update);
+            this.seriesFitness.getData().addAll(list);
+
+            this.initCoord(COORD_SIZE);
+        }
+    }
+
+    private void initCoord(int size)
+    {
+        this.coordSize = size;
+        this.coordI = 0;
+        this.coordinates = new Coordinate[coordSize];
+    }
+
+    public void exitApplication(WindowEvent event) {
+        resolver.stop();
     }
 }
