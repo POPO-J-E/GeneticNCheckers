@@ -4,6 +4,7 @@ import com.polytech.ndames.dames.Board;
 import com.polytech.ndames.recuit.Recuit;
 import sample.Utils.EvolvingInputBuilder;
 import sample.setttings.evolving.IntegerLabelSettingsInput;
+import sample.setttings.evolving.NumberLabelSettingsInput;
 
 /**
  * Created by kifkif on 07/04/2017.
@@ -14,10 +15,7 @@ public class SimulatedAnnealingEvolvingController extends EvolvingController<Rec
     public void buildSettings(EvolvingInputBuilder<Recuit> builder) {
         builder.add("Size", Recuit::getSize);
         builder.add("Best fitness", Recuit::getBestFitness);
-    }
-
-    @Override
-    protected void updateInfos(Board board) {
-        System.out.println("coucouc!");
+        builder.add(new NumberLabelSettingsInput<>("Temperature", Recuit::getTemperature));
+        builder.add(new NumberLabelSettingsInput<>("DeltaF", Recuit::getDeltaf));
     }
 }
