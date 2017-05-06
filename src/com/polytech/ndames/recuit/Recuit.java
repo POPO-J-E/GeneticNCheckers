@@ -59,46 +59,46 @@ public class Recuit extends Resolver<Recuit> {
         int n1 = generateN1();
         System.out.println("N1 = " + n1);
 
-        for (int j = 0; j < n1; j++) {
-            for (int k = 1; k < nbIteration; k++) {
-                Board aleaNeighbour = Utils.getRandomNeighbour(currentBoard);
-//                Board aleaNeighbour = Utils.getAleaNeighbour(currentBoard);
-                //System.out.println("alea=" +aleaNeighbour);
+        while(n1>=0 || nbIteration>=0 || running){
+            Board aleaNeighbour = Utils.getRandomNeighbour(currentBoard);
+            //Board aleaNeighbour = Utils.getAleaNeighbour(currentBoard);
+            //System.out.println("alea=" +aleaNeighbour);
 
-                deltaf = Utils.getFistness(aleaNeighbour) - Utils.getFistness(currentBoard);
-                if (deltaf<=0)
+            deltaf = Utils.getFistness(aleaNeighbour) - Utils.getFistness(currentBoard);
+            if (deltaf<=0)
+            {
+                currentBoard = aleaNeighbour;
+                if(Utils.getFistness(currentBoard) < Utils.getFistness(bestBoard))
                 {
-                    currentBoard = aleaNeighbour;
-                    if(Utils.getFistness(currentBoard) < Utils.getFistness(bestBoard))
+                    bestBoard = aleaNeighbour;
+                    System.out.println(Utils.getFistness(bestBoard));
+                    if (Utils.getFistness(bestBoard) == 0)
                     {
-                        bestBoard = aleaNeighbour;
-                        System.out.println(Utils.getFistness(bestBoard));
-                        if (Utils.getFistness(bestBoard) == 0)
-                        {
-                            setChanged();
-                            notifyObservers(bestBoard);
-                            this.endResolve();
-                            return bestBoard;
-                        }
+                        setChanged();
+                        notifyObservers(bestBoard);
+                        this.endResolve();
+                        return bestBoard;
                     }
                 }
-                else {
-                    if (rand.nextFloat() <= Math.exp(-deltaf/temperature))
-                        currentBoard = aleaNeighbour;
-                }
-
-                //Stop condition
-                if(!this.running)
-                {
-                    this.endResolve();
-                    return this.bestBoard;
-                }
-                else
-                {
-                    setChanged();
-                    notifyObservers(currentBoard);
-                }
             }
+            else {
+                if (rand.nextFloat() <= Math.exp(-deltaf/temperature))
+                    currentBoard = aleaNeighbour;
+            }
+
+            //Stop condition
+            if(!this.running)
+            {
+                this.endResolve();
+                return this.bestBoard;
+            }
+            else
+            {
+                setChanged();
+                notifyObservers(currentBoard);
+            }
+            n1--;
+            nbIteration--;
             temperature *= alpha;
         }
 

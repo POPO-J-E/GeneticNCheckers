@@ -20,15 +20,15 @@ public class SimulatedAnnealingSettingsController extends SettingsController<Rec
     @Override
     public void buildSettings(SettingsBuilder builder)
     {
-        builder.add(new IntegerTextFieldSettingsInput<Recuit>("Board size", "The board size is...........")
+        builder.add(new IntegerTextFieldSettingsInput<Recuit>("Board size", "The board size is the height or the width of the checker board. there will be the same number of queens than the board size")
                 .setResolverValueGetter(Recuit::getSize)
                 .setResolverValueSetter(Recuit::setSize)
             )
-            .add(new IntegerTextFieldSettingsInput<Recuit>("Number Of Iterations", "The board size is...........")
+            .add(new IntegerTextFieldSettingsInput<Recuit>("Number Of Iterations", "The number of iterations is the number of time that the search will be done")
                 .setResolverValueGetter(Recuit::getNbIteration)
                 .setResolverValueSetter(Recuit::setNbIteration)
             )
-            .add(new NumberTextFieldSettingsInput<Recuit>("Alpha", "The board size is...........")
+            .add(new NumberTextFieldSettingsInput<Recuit>("Alpha", "The alpha is ")
                     .setResolverValueGetter(Recuit::getAlpha)
                     .setResolverValueSetter(Recuit::setAlpha)
             )

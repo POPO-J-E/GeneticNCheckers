@@ -21,7 +21,7 @@ public class GeneticEvolvingController extends EvolvingController<GeneticResolve
     public void buildSettings(EvolvingInputBuilder<GeneticResolver> builder) {
         builder.add("Board Size", GeneticResolver::getBoardSize);
         builder.add(new NumberLabelSettingsInput<>("Best Fitness", GeneticResolver::getBestFitness));
-        builder.add(new IntegerLabelSettingsInput<>("Number of Generations", "The board size is...........", GeneticResolver::getNbGen));
-        builder.add(new NumberLabelSettingsInput<>("Mutation Rate", "The board size is...........", GeneticResolver::getMutationRate));
+        builder.add(new IntegerLabelSettingsInput<>("Number of Generations", GeneticResolver::getNbGen));
+        builder.add(new NumberLabelSettingsInput<>("Mutation Rate", GeneticResolver::getMutationRate));
     }
 }

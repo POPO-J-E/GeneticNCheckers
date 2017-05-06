@@ -19,15 +19,15 @@ public class TabooSettingsController extends SettingsController<Tabou> {
 
     @Override
     public void buildSettings(SettingsBuilder builder) {
-        builder.add(new IntegerTextFieldSettingsInput<Tabou>("Board size", "The board size is...........")
+        builder.add(new IntegerTextFieldSettingsInput<Tabou>("Board size", "The board size is the height or the width of the checker board. there will be the same number of queens than the board size")
                 .setResolverValueGetter(Tabou::getSize)
                 .setResolverValueSetter(Tabou::setSize)
             )
-            .add(new IntegerTextFieldSettingsInput<Tabou>("Number Of Iterations", "The board size is...........")
+            .add(new IntegerTextFieldSettingsInput<Tabou>("Number Of Iterations", "The number of iterations is the number of time that the search will be done")
                     .setResolverValueGetter(Tabou::getNbIteration)
                     .setResolverValueSetter(Tabou::setNbIteration)
             )
-            .add(new IntegerTextFieldSettingsInput<Tabou>("Taboo List Size", "The board size is...........")
+            .add(new IntegerTextFieldSettingsInput<Tabou>("Taboo List Size", "The Taboo list size is the number that will be possible to save in the taboo algorithm")
                     .setResolverValueGetter(Tabou::getTabouSize)
                     .setResolverValueSetter(Tabou::setTabouSize)
             )

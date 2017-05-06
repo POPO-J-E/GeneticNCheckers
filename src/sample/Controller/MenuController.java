@@ -66,7 +66,7 @@ public class MenuController implements Initializable{
     {
         int ROW_HEIGHT = 50;
 
-        String description_simulatedAnnealingAlgorithm = "Simulated annealing algorithm : \n eq;eyrdbsuqseyr xjexfdbqwyze xqwzfqytwfjxytxdfx gzf <eyd fwyjsetdwhg fesdyqtfesuXTQ DF?WHGF DN";
+        String description_simulatedAnnealingAlgorithm = "Simulated annealing algorithm : \nThis is a probabilistic technique for approximating the global optimum of a given function. Specifically, it's a metaheuristic to approximate global optimization in a large search space. For problems where finding an approximate global optimum is more important than finding a precise local optimum in a fixed amount of time.";
         HBox hBox_simulatedAnnealingAlgorithm = setItem(
                 "Simulated annealing algorithm",
                 description_simulatedAnnealingAlgorithm,
@@ -74,7 +74,7 @@ public class MenuController implements Initializable{
                 ALGORITHM.SIMULATED_ANNEALING
         );
 
-        String description_tabooAlgorithm = "Taboo algorithm : \n eq;eyrdbsuqseyr xjexfdbqwyze xqwzfqytwfjxytxdfx gzf <eyd fwyjsetdwhg fesdyqtfesuXTQ DF?WHGF DN";
+        String description_tabooAlgorithm = "Taboo algorithm : \nThe implementation of tabu search uses memory structures that describe the visited solutions or user-provided sets of rules. If a potential solution has been previously visited within a certain short-term period or if it has violated a rule, it is marked as \"tabu\" so that the algorithm does not consider that possibility repeatedly.";
         HBox hBox_tabooAlgorithm = setItem(
                 "Taboo algorithm",
                 description_tabooAlgorithm,
@@ -82,7 +82,7 @@ public class MenuController implements Initializable{
                 ALGORITHM.TABOO
         );
 
-        String description_geneticAlgorithm = "Genetic algorithm : \n eq;eyrdbsuqseyr xjexfdbqwyze xqwzfqytwfjxytxdfx gzf <eyd fwyjsetdwhg fesdyqtfesuXTQ DF?WHGF DN";
+        String description_geneticAlgorithm = "Genetic algorithm : \nThis is a metaheuristic inspired by the process of natural selection that belongs to the larger class of evolutionary algorithms (EA). Genetic algorithms are commonly used to generate high-quality solutions to optimization and search problems by relying on bio-inspired operators such as mutation, crossover and selection.";
         HBox hBox_geneticAlgorithm = setItem(
                 "Genetic algorithm",
                 description_geneticAlgorithm,
