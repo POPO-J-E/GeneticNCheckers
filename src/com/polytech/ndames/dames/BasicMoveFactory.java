@@ -12,8 +12,10 @@ public class BasicMoveFactory implements MoveFactory {
     {
         ArrayList<Move> moves = new ArrayList<>(size*size);
         for (int i = 0; i < size; i++) {
-            for (int j = 0; j < size; j++) {
-                moves.add(buildMove(i, j));
+            for (int j = 0; j < size; j++)
+            {
+                if(i != j)
+                    moves.add(buildMove(i, j));
             }
         }
         return moves;

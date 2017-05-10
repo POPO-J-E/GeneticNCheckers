@@ -14,9 +14,9 @@ public class BasicMoveFactoryLimit extends BasicMoveFactory {
         ArrayList<Move> moves = new ArrayList<>(size*size);
         int limit = (int)Math.sqrt(size);
         for (int i = 0; i < size; i++) {
-            for (int j = 0; j < limit; j++) {
+            for (int j = 1; j < limit; j++) {
                 moves.add(buildMove(i, j));
-                moves.add(buildMove(i, size-j));
+                moves.add(buildMove(i, -j));
             }
         }
         return moves;

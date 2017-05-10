@@ -32,7 +32,7 @@ public class BasicMove implements Move<BasicMove>
 
     @Override
     public String toString() {
-        return "Move{"+dame + "-" + velocity+"}";
+        return "Move{"+dame + " - " + velocity+"}";
     }
 
     public boolean equals(Object obj)
@@ -42,19 +42,37 @@ public class BasicMove implements Move<BasicMove>
 
     public String opposite(int size)
     {
-        return "Move{"+dame + " - " + (size-velocity)+"}";
+        return "Move{"+dame + velocity + " - " + (-velocity)+"}";
     }
 
     public boolean isOpposite(BasicMove move, int size)
     {
-        return (move.getDame() == dame) && ((size-velocity-1) == move.getVelocity());
+        int secondDame = dame + velocity;
+        if(secondDame < 0)
+            secondDame += size;
+        secondDame %= size;
+
+        int vel1 = velocity;
+        int vel2 = -move.getVelocity();
+        if(vel1 < 0)
+            vel1 += size;
+        if(vel2 < 0)
+            vel2 += size;
+
+        return (move.getDame() == secondDame) && (vel1 == -vel2);
     }
 
     @Override
     public Board apply(Board board) {
         Board newBoard = board.newInstance();
         Dame dame = newBoard.getDames().get(this.getDame());
-        dame.setColumn(dame.getColumn() + this.getVelocity() % newBoard.getSize());
+        int vel = this.getVelocity();
+        int lastCol = dame.getColumn();
+        int col = lastCol + vel;
+        if(col < 0)
+            col += newBoard.getSize();
+        int newCol = col % newBoard.getSize();
+        dame.setColumn(newCol);
         return newBoard;
     }
 }

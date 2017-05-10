@@ -30,7 +30,7 @@ public class Tabou extends Resolver<Tabou> {
     private List<Move> moves;
 
     public Tabou() {
-        this(8, 2, 10000, new OnePerColBoardFactory(), new BasicMoveFactoryLimit());
+        this(8, 2, 10000, new OnePerColBoardFactory(), new SwitchMoveFactory());
     }
 
     public Tabou(int size, int tabouSize, int nbIteration, BoardFactory boardFactory, MoveFactory moveFactory) {
@@ -65,24 +65,22 @@ public class Tabou extends Resolver<Tabou> {
                 Move move = entry.getKey();
                 Board board = entry.getValue();
 
-                float fitness = Utils.getFistness(board);
-                if(fitness < localBestFitness)
-                {
-                    localBestFitness = fitness;
-                    localBestBoard = board;
-                    localMove = move;
-                }
+                if(!fifo.contains(move)) {
+                    float fitness = Utils.getFistness(board);
+                    if (fitness < localBestFitness) {
+                        localBestFitness = fitness;
+                        localBestBoard = board;
+                        localMove = move;
 
-                //Stop condition
-                if(!this.running)
-                {
-                    this.endResolve();
-                    return this.bestBoard;
-                }
-                else
-                {
-                    setChanged();
-                    notifyObservers(currentBoard);
+                        setChanged();
+                        notifyObservers(localBestBoard);
+                    }
+
+                    //Stop condition
+                    if (!this.running) {
+                        this.endResolve();
+                        return this.bestBoard;
+                    }
                 }
             }
 
@@ -114,10 +112,13 @@ public class Tabou extends Resolver<Tabou> {
     private void forbidMove(Move move)
     {
         Move opposite = Utils.getOpposite(moves, move, size);
-        moves.remove(opposite);
-        Move popMove = this.fifo.addElement(opposite);
-        if(popMove != null)
-            this.moves.add(popMove);
+        if(opposite == null)
+            System.out.println("null move");
+        this.fifo.add(opposite);
+        //moves.remove(opposite);
+//        Move popMove = this.fifo.addElement(opposite);
+//        if(popMove != null)
+//            this.moves.add(popMove);
     }
 
     public int getTabouSize() {

@@ -1,6 +1,8 @@
 package sample.Controller;
 
 import com.polytech.ndames.dames.Board;
+import com.polytech.ndames.dames.BoardFactory;
+import com.polytech.ndames.dames.OnePerColBoardFactory;
 import com.polytech.ndames.dames.Utils;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
@@ -63,18 +65,22 @@ public abstract class EvolvingController<R extends Resolver<R>> implements Initi
     private R resolver;
     private EvolvingInputBuilder<R> builder;
 
-    private final int COORD_SIZE = 500;
+    private final int COORD_SIZE;
     private int coordSize;
     private int coordI;
     private Coordinate[] coordinates;
     private double distanceTol;
 
     public EvolvingController() {
-        this(1);
+        this(500, 1);
+    }
+    public EvolvingController(int coordSize) {
+        this(coordSize, 1);
     }
 
-    public EvolvingController(double distanceTol) {
+    public EvolvingController(int coordSize, double distanceTol) {
         this.builder = new EvolvingInputBuilder<>();
+        this.COORD_SIZE = coordSize;
         this.distanceTol = distanceTol;
     }
 
@@ -187,7 +193,7 @@ public abstract class EvolvingController<R extends Resolver<R>> implements Initi
             update.add(new XYChart.Data<>(each.x, each.y));
         }
         long t1 = System.nanoTime();
-        System.out.println(String.format("Reduces points from %d to %d in %.1f ms", coordinates.length, update.size(), (t1 - t0) / 1e6));
+        //System.out.println(String.format("Reduces points from %d to %d in %.1f ms", coordinates.length, update.size(), (t1 - t0) / 1e6));
         ObservableList<XYChart.Data<Number, Number>> list = FXCollections.observableArrayList(update);
         this.seriesFitness.getData().addAll(list);
 
@@ -206,21 +212,20 @@ public abstract class EvolvingController<R extends Resolver<R>> implements Initi
 
         if(coordI >= coordSize)
         {
-            long t0 = System.nanoTime();
-            GeometryFactory gf = new GeometryFactory();
-            Geometry geom = new LineString(new CoordinateArraySequence(coordinates), gf);
-            Geometry simplified = DouglasPeuckerSimplifier.simplify(geom, 1);
-            List<XYChart.Data<Number, Number>> update = new ArrayList<>();
-            for (Coordinate each : simplified.getCoordinates()) {
-                update.add(new XYChart.Data<>(each.x, each.y));
-            }
-            long t1 = System.nanoTime();
-            System.out.println(String.format("Reduces points from %d to %d in %.1f ms", coordinates.length, update.size(),
-                    (t1 - t0) / 1e6));
-            ObservableList<XYChart.Data<Number, Number>> list = FXCollections.observableArrayList(update);
-            this.seriesFitness.getData().addAll(list);
+                long t0 = System.nanoTime();
+                GeometryFactory gf = new GeometryFactory();
+                Geometry geom = new LineString(new CoordinateArraySequence(coordinates), gf);
+                Geometry simplified = DouglasPeuckerSimplifier.simplify(geom, 1);
+                List<XYChart.Data<Number, Number>> update = new ArrayList<>();
+                for (Coordinate each : simplified.getCoordinates()) {
+                    update.add(new XYChart.Data<>(each.x, each.y));
+                }
+                long t1 = System.nanoTime();
+                //System.out.println(String.format("Reduces points from %d to %d in %.1f ms", coordinates.length, update.size(), (t1 - t0) / 1e6));
+                ObservableList<XYChart.Data<Number, Number>> list = FXCollections.observableArrayList(update);
+                this.seriesFitness.getData().addAll(list);
 
-            this.initCoord(COORD_SIZE);
+                this.initCoord(COORD_SIZE);
         }
     }
 

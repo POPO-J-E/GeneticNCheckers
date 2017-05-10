@@ -14,7 +14,7 @@ import sample.setttings.evolving.NumberLabelSettingsInput;
 public class GeneticEvolvingController extends EvolvingController<GeneticResolver> {
 
     public GeneticEvolvingController() {
-        super(0.01);
+        super(500, 0.01);
     }
 
     @Override

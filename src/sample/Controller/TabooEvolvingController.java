@@ -10,6 +10,10 @@ import sample.setttings.evolving.NumberLabelSettingsInput;
  */
 public class TabooEvolvingController extends EvolvingController<Tabou> {
 
+    public TabooEvolvingController() {
+        super(2);
+    }
+
     @Override
     public void buildSettings(EvolvingInputBuilder<Tabou> builder) {
         builder.add("Board Size", Tabou::getSize);

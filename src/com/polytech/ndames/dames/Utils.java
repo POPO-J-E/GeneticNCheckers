@@ -17,10 +17,7 @@ public class Utils {
 
     public static Board getNeighbour(Board board, BasicMove move)
     {
-        Board newBoard = board.newInstance();
-        Dame dame = newBoard.getDames().get(move.getDame());
-        dame.setColumn(dame.getColumn() + move.getVelocity() % newBoard.getSize());
-        return newBoard;
+        return move.apply(board);
     }
 
     public static Board getRandomNeighbour(Board board)
