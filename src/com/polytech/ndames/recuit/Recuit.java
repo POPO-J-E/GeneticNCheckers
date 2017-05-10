@@ -59,7 +59,7 @@ public class Recuit extends Resolver<Recuit> {
         int n1 = generateN1();
         System.out.println("N1 = " + n1);
 
-        while(n1>=0 || nbIteration>=0 || running){
+        while(n1>=0 || temperature>=gamma || running){
             Board aleaNeighbour = Utils.getRandomNeighbour(currentBoard);
             //Board aleaNeighbour = Utils.getAleaNeighbour(currentBoard);
             //System.out.println("alea=" +aleaNeighbour);
@@ -98,7 +98,7 @@ public class Recuit extends Resolver<Recuit> {
                 notifyObservers(currentBoard);
             }
             n1--;
-            nbIteration--;
+            //nbIteration--;
             temperature *= alpha;
         }
 

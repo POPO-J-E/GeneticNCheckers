@@ -32,6 +32,10 @@ public class SimulatedAnnealingSettingsController extends SettingsController<Rec
                     .setResolverValueGetter(Recuit::getAlpha)
                     .setResolverValueSetter(Recuit::setAlpha)
             )
+                .add(new NumberTextFieldSettingsInput<Recuit>("Gamma", "The gamma is ")
+                    .setResolverValueGetter(Recuit::getGamma)
+                    .setResolverValueSetter(Recuit::setGamma)
+            )
         ;
     }
 }
