@@ -1,10 +1,7 @@
 package sample.Controller;
 
 import com.polytech.ndames.genetic.GeneticResolver;
-import com.polytech.ndames.tabou.Tabou;
 import sample.Utils.EvolvingInputBuilder;
-import sample.setttings.IntegerTextFieldSettingsInput;
-import sample.setttings.NumberTextFieldSettingsInput;
 import sample.setttings.evolving.IntegerLabelSettingsInput;
 import sample.setttings.evolving.NumberLabelSettingsInput;
 
@@ -23,5 +20,6 @@ public class GeneticEvolvingController extends EvolvingController<GeneticResolve
         builder.add(new NumberLabelSettingsInput<>("Best Fitness", GeneticResolver::getBestFitness));
         builder.add(new IntegerLabelSettingsInput<>("Number of Generations", GeneticResolver::getNbGen));
         builder.add(new NumberLabelSettingsInput<>("Mutation Rate", GeneticResolver::getMutationRate));
+        builder.add(new IntegerLabelSettingsInput<>("Time (Millis)", r->(int)r.getMillisExecutionTime()));
     }
 }

@@ -1,8 +1,8 @@
 package sample.Controller;
 
-import com.polytech.ndames.dames.Board;
 import com.polytech.ndames.tabou.Tabou;
 import sample.Utils.EvolvingInputBuilder;
+import sample.setttings.evolving.IntegerLabelSettingsInput;
 import sample.setttings.evolving.NumberLabelSettingsInput;
 
 /**
@@ -28,5 +28,6 @@ public class TabooEvolvingController extends EvolvingController<Tabou> {
                 return 0;
             }
         });
+        builder.add(new IntegerLabelSettingsInput<>("Time (Millis)", r->(int)r.getMillisExecutionTime()));
     }
 }

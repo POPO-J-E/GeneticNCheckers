@@ -1,10 +1,7 @@
 package sample.Utils;
 
 import com.polytech.ndames.dames.Board;
-import sample.Controller.SettingsController;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Observable;
 import java.util.function.Consumer;
 
@@ -15,6 +12,8 @@ public abstract class Resolver<R extends Resolver> extends Observable{
 
     private Consumer<R> onStopAction;
     protected boolean running;
+    private long startMillis;
+    private long endMillis;
 
     public Resolver() {
         this.running = false;
@@ -23,6 +22,8 @@ public abstract class Resolver<R extends Resolver> extends Observable{
     public synchronized Board start()
     {
         this.running = true;
+        startMillis = System.currentTimeMillis();
+        endMillis = 0;
         return this.startResolve();
     }
 
@@ -52,6 +53,7 @@ public abstract class Resolver<R extends Resolver> extends Observable{
 
     public void endResolve()
     {
+        endMillis = System.currentTimeMillis();
         this.setChanged();
         this.notifyObservers("end");
     }
@@ -59,4 +61,12 @@ public abstract class Resolver<R extends Resolver> extends Observable{
     public abstract float getBestFitness();
 
     public abstract Board getBestBoard();
+
+    public long getMillisExecutionTime()
+    {
+        if(endMillis == 0)
+            return System.currentTimeMillis() - startMillis;
+        else
+            return endMillis - startMillis;
+    }
 }
