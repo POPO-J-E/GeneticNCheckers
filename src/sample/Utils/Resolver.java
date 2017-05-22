@@ -1,7 +1,10 @@
 package sample.Utils;
 
 import com.polytech.ndames.dames.Board;
+import javafx.scene.control.Alert;
 
+import javax.swing.*;
+import java.awt.*;
 import java.util.Observable;
 import java.util.function.Consumer;
 

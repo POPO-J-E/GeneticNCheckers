@@ -2,7 +2,6 @@ package com.polytech.ndames.dames;
 
 import com.atles.genetic_harvester.NumericGene;
 import com.atles.genetic_harvester.Phenotype;
-import com.polytech.ndames.genetic.DameFactory;
 
 import java.util.*;
 
@@ -25,6 +24,11 @@ public class Utils {
         BasicMove move = (BasicMove)moveFactory.buildRandomMove(board.getSize());
         return getNeighbour(board, move);
     }
+
+//    public static Board getRamdonSwitchNeighbour(Board board){
+////        Move move = moveFactory.buildRandomMove(board.getSize());
+////        return getNeighbour(board, move);
+//    }
 
     public static List<Board> getNeighbours(Board board)
     {
