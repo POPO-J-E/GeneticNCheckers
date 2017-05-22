@@ -12,23 +12,19 @@ import java.util.*;
 public class Utils {
 
     public static Random rand = new Random();
-    public static MoveFactory moveFactory = new BasicMoveFactory();
+    public static MoveFactory moveFactory = new SwitchMoveFactoryLimit();
 
-    public static Board getNeighbour(Board board, BasicMove move)
+    public static Board getNeighbour(Board board, Move move)
     {
         return move.apply(board);
     }
 
     public static Board getRandomNeighbour(Board board)
     {
-        BasicMove move = (BasicMove)moveFactory.buildRandomMove(board.getSize());
+        Move move = moveFactory.buildRandomMove(board.getSize());
         return getNeighbour(board, move);
     }
 
-//    public static Board getRamdonSwitchNeighbour(Board board){
-////        Move move = moveFactory.buildRandomMove(board.getSize());
-////        return getNeighbour(board, move);
-//    }
 
     public static List<Board> getNeighbours(Board board)
     {

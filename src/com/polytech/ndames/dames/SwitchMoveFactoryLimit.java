@@ -2,6 +2,7 @@ package com.polytech.ndames.dames;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Created by kifkif on 28/03/2017.
@@ -38,6 +39,8 @@ public class SwitchMoveFactoryLimit implements MoveFactory {
 
     @Override
     public Move buildRandomMove(int size) {
-        return null;
+        Random r = new Random();
+        List<Move> moves = buildAllMoves(size);
+        return moves.get(r.nextInt(moves.size()));
     }
 }
