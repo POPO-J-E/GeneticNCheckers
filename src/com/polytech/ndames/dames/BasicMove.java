@@ -1,5 +1,8 @@
 package com.polytech.ndames.dames;
 
+import java.util.Collections;
+import java.util.List;
+
 /**
  * Created by kifkif on 16/03/2017.
  */
@@ -74,5 +77,10 @@ public class BasicMove implements Move<BasicMove>
         int newCol = col % newBoard.getSize();
         dame.setColumn(newCol);
         return newBoard;
+    }
+
+    @Override
+    public List<Integer> getAlteredLines() {
+        return Collections.singletonList(this.getDame());
     }
 }

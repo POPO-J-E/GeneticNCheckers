@@ -1,7 +1,6 @@
 package com.polytech.ndames.dames;
 
 import com.atles.genetic_harvester.Factory;
-import com.atles.genetic_harvester.operator.UniformCrossOver;
 
 import java.util.ArrayList;
 import java.util.List;

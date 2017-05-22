@@ -30,7 +30,7 @@ public class Tabou extends Resolver<Tabou> {
     private List<Move> moves;
 
     public Tabou() {
-        this(8, 2, 10000, new OnePerColBoardFactory(), new SwitchMoveFactory());
+        this(8, 2, 10000, new OnePerColBoardFactory(), new SwitchMoveFactoryLimit());
     }
 
     public Tabou(int size, int tabouSize, int nbIteration, BoardFactory boardFactory, MoveFactory moveFactory) {
@@ -56,6 +56,7 @@ public class Tabou extends Resolver<Tabou> {
         do
         {
             Map<Move, Board> neighbours = Utils.getNeighbours(currentBoard, moves);
+            float curFitness = Utils.getFistness(currentBoard);
 
             Board localBestBoard = null;
             Move localMove = null;
@@ -66,7 +67,7 @@ public class Tabou extends Resolver<Tabou> {
                 Board board = entry.getValue();
 
                 if(!fifo.contains(move)) {
-                    float fitness = Utils.getFistness(board);
+                    float fitness = Utils.getFistness(currentBoard, board, curFitness, move);
                     if (fitness < localBestFitness) {
                         localBestFitness = fitness;
                         localBestBoard = board;

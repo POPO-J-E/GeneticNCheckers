@@ -2,7 +2,6 @@ package com.polytech.ndames.dames;
 
 import com.atles.genetic_harvester.NumericGene;
 import com.atles.genetic_harvester.Phenotype;
-import com.polytech.ndames.genetic.DameFactory;
 
 import java.util.*;
 
@@ -142,5 +141,41 @@ public class Utils {
             board.getDames().add(d);
         }
         return board;
+    }
+
+    public static float getFistness(Board currentBoard, Board board, float fitness, Move<?> move) {
+        int size = board.getSize();
+        float currentBoard_conflicts = 0;
+        float board_conflicts = 0;
+
+        List<Integer> lines = move.getAlteredLines();
+
+        for(int i = 0; i < lines.size(); i++)
+        {
+            int row = lines.get(i);
+            Dame dame = board.getDames().get(row);
+            Dame cur_dame = currentBoard.getDames().get(row);
+            for (int row_bis = 0; row_bis < size; row_bis++)
+            {
+                if(row_bis != row)
+                {
+                    Dame dame_bis = board.getDames().get(row_bis);
+                    Dame cur_dame_bis = currentBoard.getDames().get(row_bis);
+
+                    if((dame.getColumn() == dame_bis.getColumn()) || (row_bis - row == Math.abs(dame.getColumn() - dame_bis.getColumn())))
+                    {
+                        board_conflicts++;
+                    }
+
+                    if((cur_dame.getColumn() == cur_dame_bis.getColumn()) || (row_bis - row == Math.abs(cur_dame.getColumn() - cur_dame_bis.getColumn())))
+                    {
+                        currentBoard_conflicts++;
+                    }
+                }
+            }
+        }
+
+        fitness += board_conflicts - currentBoard_conflicts;
+        return fitness;
     }
 }

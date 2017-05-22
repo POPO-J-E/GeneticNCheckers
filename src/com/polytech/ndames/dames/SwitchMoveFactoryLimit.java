@@ -13,9 +13,13 @@ public class SwitchMoveFactoryLimit implements MoveFactory {
     public SwitchMoveFactoryLimit(int limit) {
         this.limit = limit;
     }
+    public SwitchMoveFactoryLimit() {
+        this(0);
+    }
 
     @Override
     public List<Move> buildAllMoves(int size) {
+        this.limit = (int)Math.sqrt(size)+1;
         ArrayList<Move> moves = new ArrayList<>(size*size);
         for (int i = 0; i < size; i++) {
             int limit = i+1+this.limit;

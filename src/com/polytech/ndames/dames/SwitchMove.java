@@ -1,5 +1,8 @@
 package com.polytech.ndames.dames;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by kifkif on 16/03/2017.
  */
@@ -26,6 +29,14 @@ public class SwitchMove implements Move<SwitchMove>
         newBoard.getDames().set(this.getCol_1(), dame_2);
         newBoard.getDames().set(this.getCol_2(), dame_1);
         return newBoard;
+    }
+
+    @Override
+    public List<Integer> getAlteredLines() {
+        List<Integer> lines = new ArrayList<>();
+        lines.add(col_1);
+        lines.add(col_2);
+        return lines;
     }
 
     public int getCol_1() {
