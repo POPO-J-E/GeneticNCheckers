@@ -13,7 +13,7 @@ public class GeneticResolver extends Resolver<GeneticResolver> {
     private DameHarvester harvester;
 
     public GeneticResolver() {
-        this(8, 10, 100);
+        this(8, 10000, 100);
     }
 
     public GeneticResolver(int size, int nbGen, int pop) {
