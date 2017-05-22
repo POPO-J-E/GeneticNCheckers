@@ -25,6 +25,11 @@ public class Utils {
         return getNeighbour(board, move);
     }
 
+//    public static Board getRamdonSwitchNeighbour(Board board){
+////        Move move = moveFactory.buildRandomMove(board.getSize());
+////        return getNeighbour(board, move);
+//    }
+
     public static List<Board> getNeighbours(Board board)
     {
         List<Board> neighboursBoards = new ArrayList<>();

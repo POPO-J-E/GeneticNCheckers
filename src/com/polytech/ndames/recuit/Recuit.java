@@ -35,7 +35,7 @@ public class Recuit extends Resolver<Recuit> {
         this.nbIteration = nbIteration;
         this.alpha = alpha;
         this.rand = new Random();
-        this.boardFactory = new RandomBoardFactory();
+        this.boardFactory = new OnePerColBoardFactory();
         this.gamma = gamma;
     }
 
@@ -45,16 +45,16 @@ public class Recuit extends Resolver<Recuit> {
     }
 
     public Recuit() {
-        this(8, 100, 0.9f);
+        this(8, 100, 0.99f);
     }
 
     public Board startResolve(){
         initialBoard = boardFactory.buildBoard(size);
         bestBoard = initialBoard;
-        int maxIteration = nbIteration;
+//        int maxIteration = nbIteration;
         Board currentBoard = initialBoard;
         deltaf = getHighDeltaF(10);
-        temperature = (float) (-deltaf/Math.log(0.8));
+        temperature = (float) (-deltaf/Math.log(0.1));
         System.out.println("Temp = " + temperature);
         int n1 = generateN1();
         System.out.println("N1 = " + n1);
@@ -62,7 +62,7 @@ public class Recuit extends Resolver<Recuit> {
         int n1depart = n1;
         float temperatureDepart = temperature;
 
-        while(temperature >= gamma && running && nbIteration<=maxIteration){
+        while(/*temperature >= gamma && */running && nbIteration>=0){
             if(n1==0)
                 temperature = (float) (Math.pow(alpha,n1depart)*temperatureDepart);
             Board aleaNeighbour = Utils.getRandomNeighbour(currentBoard);
@@ -105,9 +105,6 @@ public class Recuit extends Resolver<Recuit> {
             n1--;
             nbIteration--;
             temperature *= alpha;
-            System.out.println("1 " + (temperature >= gamma));
-            System.out.println("2 " + running);
-            System.out.println("3 " + (nbIteration<=maxIteration));
         }
 
         setChanged();
@@ -120,7 +117,7 @@ public class Recuit extends Resolver<Recuit> {
 
     public int generateN1()
     {
-        return (int) (Math.log(-deltaf/(temperature*Math.log(0.001)))/Math.log(alpha));
+        return (int) (Math.log(-deltaf/(temperature*Math.log(0.01)))/Math.log(alpha));
     }
 
     public float getHighDeltaF(int nb)

@@ -170,11 +170,20 @@ public abstract class EvolvingController<R extends Resolver<R>> implements Initi
             String action = (String)o;
             if(action.equals("end"))
             {
+                Platform.runLater(this::opendialog);
                 Platform.runLater(this::endResolve);
             }
         }
 
         this.builder.updateInputs(resolver);
+    }
+
+    private synchronized void opendialog(){
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Information Dialog");
+        alert.setHeaderText(null);
+        alert.setContentText("End resolution");
+        alert.showAndWait();
     }
 
     private synchronized void endResolve() {
